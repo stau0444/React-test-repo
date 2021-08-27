@@ -2,6 +2,15 @@
 ## React
 #
 
+## 링크
+- [React concpet](#React-concept)
+- [React 핵심 모듈(React와 ReactDOM)](#React-핵심-모듈)
+- [class Component와 function Component](#class-Component와-function-Component)
+- [React.CreateElement()](#React.CreateElement())
+- [JSX](#JSX)
+
+<br/>
+
 > 프레임워크 별 비교
 
 종류|angular | react | vue
@@ -74,7 +83,7 @@ import React from 'react';
 
 //js , jsx 로 만들어진 컴포넌트를 
 //HTMLElement에 연결
-ReactDom.render(
+ReactDOM.render(
     <HelloMsg name = "Ugo"/>
     document.getElementById('hello');
 );
@@ -91,6 +100,115 @@ class HelloMsg extends React.Component{
 }
 
 ```
+
+#
+### class Component와 function Component
+#
+
+>1.컴포넌트 생성 , 사용
+
+```js
+//1.class 컴포넌트 정의
+//React 컴포넌트로 선언 (React.Compent 상속)
+class ClassComponent extends React.Component{
+    render(){
+        return <div>ClassComponent</div>;
+    }
+}
+
+//컴포넌트 사용
+ReactDOM.render(<ClassComponent/>,document.querySelector('#root'));
+
+//2.function 컴포넌트 정의
+
+//정의1 
+function FunctionComponent(){
+    //jsx를 리턴해줘야 한다.
+    return <div>Hello</div>;
+}
+
+//정의2
+const FunctionComponent = () => <div>Hello</div>;
+
+//컴포넌트 사용
+ReactDOM.render(<FunctionComponent/>,document.querySelector('#root'));
+        
+```
+
+#
+### React.CreateElement()
+#
+
+> React에서 컴포넌트를 만들어내는 메서드이다 파라미터 첫번째 인자로 리액트 컴포넌트,
+두번째로 props, 세번째는 자식으로 넣어줄 요소들이 들어간다.
+
+```js
+React.createElement(
+    type, //태그 이름 문자열 | 리액트 컴포넌트 자체 | React.Fragment
+    [props], //리액트 컴포넌트에 넣을 데이터 객체
+    [...children] //자식으로 넣어주는 요소들
+)
+
+//1. 태그이름 문자열으로 컴포넌트 생성 
+ReactDOM.render(
+    React.createElement('h1',null,`태그이름 문자열 타입`),
+    document.querySelector('#root')
+)
+
+//2.리액트 컴포넌트 타입
+const Component = () => <h1>리액트 컴포넌트 타입</h1>;
+
+ReactDOM.render(
+    <Component/>,
+    document.querySelector('#root')
+)
+
+//3.React.Fragment
+//특정 요소를 만들어내지 않고 
+//원하는 위치에 바로 자식요소를 배열쳐렴 녛고 싶을 때 
+//Fragment를 사용한다.
+ReactDOM.render(
+    React.createElement(
+        React.Fragment,
+        null,
+        `<button>1</button>`,
+        `<button>2</button>`,
+        `<button>3</button>`
+    ),
+    document.querySelector('#root')
+)
+
+// 4. 복잡한 리액트 엘리먼트 모임 (createElement의 한계)
+// <div>
+//     <ul>
+//         <li>React</li>
+//         <li>Vue</li>
+//     </ul>
+// </div>
+// 위와 같은 HTML 을 컴포넌트로 만들어 내려면?
+
+//같은 코드가 반복된다
+//가독성이 낮다
+ReactDOM.render(
+    React.createElement('div',null,
+        React.createElement('ul',null,
+            React.createElement(React.Fragment,null,
+                React.createElement('li',null,`REACT`),
+                React.createElement('li',null,`VUE`),
+            )
+        )
+    ),
+    document.querySelector('#root')
+)
+
+//위와 같은 문제를 해결하기 위해 JSX를 사용한다
+```
+
+#
+### JSX
+#
+
+
 
 
   
