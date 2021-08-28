@@ -9,12 +9,7 @@
     <body>
 
         <div id="root">
-            <div>
-                <ul>
-                    <li>React</li>
-                    <li>Vue</li>
-                </ul>
-            </div>
+            
         </div>
         
         <!-- cdn을 통해 React , ReactDOM 전역객체가 생성된다. -->
@@ -24,64 +19,18 @@
         <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
         <script type="text/babel">
         
-        
-            console.log(React)
-            console.log(ReactDOM)
-            // React.createElement(
-            //     type, //태그 이름 문자열 | 리액트 컴포넌트 자체 | React.Fragment
-            //     [props], //리액트 컴포넌트에 넣을 데이터 객체
-            //     [...children] //자식으로 넣어주는 요소들
-            // )
+            //jsx
+            //jsx 는 바벨을 통해 js로 컴파일된다.
 
-            //1. 태그이름 문자열 사용 
-            // ReactDOM.render(
-            //     React.createElement('h1',null,`태그이름 문자열 타입`),
-            //     document.querySelector('#root')
-            // )
-
-            //2.리액트 컴포넌트 타입
-            // const Component = () => <h1>리액트 컴포넌트 타입</h1>;
-
-            // ReactDOM.render(
-            //     <Component/>,
-            //     document.querySelector('#root')
-            // )
-
-            // //3.React.Fragment
-            // //특정 요소를 만들어내지 않고 
-            // //원하는 위치에 바로 자식요소를 배열쳐렴 녛고 싶을 때 
-            // //Fragment를 사용한다.
-            // ReactDOM.render(
-            //     React.createElement(
-            //         React.Fragment,
-            //         null,
-            //         `<button>1</button>`,
-            //         `<button>2</button>`,
-            //         `<button>3</button>`
-            //     ),
-            //     document.querySelector('#root')
-            // )
-
-            // 4. 복잡한 리액트 엘리먼트 모임 (createElement의 한계)
-            // <div>
-            //     <ul>
-            //         <li>React</li>
-            //         <li>Vue</li>
-            //     </ul>
-            // </div>
-            // 위와 같은 HTML 을 컴포넌트로 만들어 내려면?
             
-            //같은 코드가 반복된다
-            //가독성이 낮다
             ReactDOM.render(
-                React.createElement('div',null,
-                    React.createElement('ul',null,
-                        React.createElement(React.Fragment,null,
-                            React.createElement('li',null,`REACT`),
-                            React.createElement('li',null,`VUE`),
-                        )
-                    )
-                ),
+                <div>
+                    <ul>
+                        <li>React</li>
+                        <li>Vue</li>
+                    </ul>
+                </div>
+                ,
                 document.querySelector('#root')
             )
 

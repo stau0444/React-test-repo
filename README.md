@@ -8,6 +8,7 @@
 - [class Component와 function Component](#class-Component와-function-Component)
 - [React.CreateElement()](#React.CreateElement())
 - [JSX](#JSX)
+- [Props 와 State](#Props와-State)
 
 <br/>
 
@@ -139,7 +140,7 @@ ReactDOM.render(<FunctionComponent/>,document.querySelector('#root'));
 ### React.CreateElement()
 #
 
-> React에서 컴포넌트를 만들어내는 메서드이다 파라미터 첫번째 인자로 리액트 컴포넌트,
+> React에서 요소를 만들어내는 메서드이다 파라미터 첫번째 인자로 리액트 컴포넌트,
 두번째로 props, 세번째는 자식으로 넣어줄 요소들이 들어간다.
 
 ```js
@@ -208,7 +209,54 @@ ReactDOM.render(
 ### JSX
 #
 
+> 리액트에서 요소를 만들때 사용하는 문법이다 . 가독성이 좋다. jsx 는 바벨을 통해 js로 컴파일되기 때문에 문법적 오류를 인지하기 쉽다.
 
+```js
+//jsx
+
+ReactDOM.render(
+    <div>
+        <ul>
+            <li>React</li>
+            <li>Vue</li>
+        </ul>
+    </div>
+    ,
+    document.querySelector('#root')
+)
+//아래 사이트에서 babel을 통해 jsx가 js 로 변환되는 것을 확인할 수 있다
+https://babeljs.io/
+```
+<br/>
+
+>JSX 문법 정리
+
+```js
+1. 최상위 요소는 하나여야 한다.
+2. 최상위 요소를 리턴하는 경우 , ()로 감싸야한다.
+3. 자식들을 바로 랜더링 하고 싶으면 ,<>자식들</>를 사용한다 => Fragment
+4. 자바스크립트 표현식을 사용하려면 ,{표현식}을 이용한다.
+5. if문은 사용할 수 없다 (삼항연산자 혹은 &&를 사용한다)
+6. style을 이용해 인라인 스타일링이 가능하다 .
+7. class 대신 className을 사용해야 class를 적용할 수 있다.
+8. 자식요소가 있으면 ,꼭 닫아야 하고, 자식요소가 없으면 열면서 닫아야 한다.
+
+```
+
+#
+### Props와 State
+#
+
+>Props는 컴포넌트 외부에서 컴포넌트에게 전달하는 데이터를 말하고 , 
+State는 컴포넌트 내부에서 변경할 수 있는 데이터를 말한다. Props 와 State에 변경이 일어날 시 컴포넌트는 해당 변경 사항을  re-render 하려한다.
+
+<br/>
+
+#### Render 함수
+
+<br/>
+
+> Props와 State를 바탕으로 컴포넌트를 그려내는 함수이다. Props와 State의 변경이 감지되면 해당 컴포넌트는 Render 함수를 다시 실행하여 변경 사항을 update 한다.
 
 
   
