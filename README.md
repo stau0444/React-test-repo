@@ -258,6 +258,119 @@ State는 컴포넌트 내부에서 변경할 수 있는 데이터를 말한다. 
 
 > Props와 State를 바탕으로 컴포넌트를 그려내는 함수이다. Props와 State의 변경이 감지되면 해당 컴포넌트는 Render 함수를 다시 실행하여 변경 사항을 update 한다.
 
+<br/>
+
+#### Props 전달과 사용  
+<br/>
+
+```js
+//----funtion Component Props----
+//함수 컴포넌트에서는 Props가 파라미터로 들어온다
+function Component(props){
+    return(
+            <div>
+                <h1>
+                    {props.message} 함수 컴포넌트
+                </h1>
+            </div>
+        );
+}
+ReactDOM.render(<Component message = "gege"/> ,document.querySelector('#root'));
+
+
+//----class Compent Props----
+//클래스 컴포넌트에서는 this의 props라는 필드로 props가 들어온다,
+class Component extends React.Component{
+    render(){
+        return(
+            <div>
+                <h1>
+                    {this.props.message} 클래스 컴포넌트
+                </h1>
+            </div>
+        );
+    }
+}
+ReactDOM.render(<Component message='hihi'/> , document.querySelector('#root'))
+
+
+//----default Props 정의----
+
+//클래스 , 함수 모두 사용가능
+Component.defaultProps = {
+    message:'default message'
+}
+ReactDOM.render(<Component /> , document.querySelector('#root'))
+
+//클래스에서만 사용가능
+class Component extends React.Component{
+    render(){
+        return(
+            <div>
+                <h1>
+                    {this.props.message} 클래스 컴포넌트
+                </h1>
+                </div>
+        );
+    }
+    static defaultProps = {
+        message : 'static default'
+    }
+}
+```
+
+<br/>
+
+### State 
+
+<br/>
+
+```js
+
+//클래스 컴포넌트에서 state 정의, 사용  ,수정
+
+class Component extends React.Component{
+    //state 정의
+    //클래스에서 컴포넌트에서 state는 객체 형태이다
+    state = {
+        count : 0 
+    };
+
+    render(){
+        return(
+            <div>
+                <h1>
+                    {this.props.message} 클래스 컴포넌트
+                </h1>
+                //state 사용
+                <p>{this.state.count}</p>
+                </div>
+        );
+    }
+    componentDidMount(){
+        setTimeout(()=>{
+            //state 수정 시에는 setState를 통해 수정해야한다.
+
+            //state 수정 방식 1
+            this.setState({
+                count : this.state.count +1
+            })
+
+            //state 수정 방식 2
+            //이전의 값을 활용해서 새로운 값을 만든다.
+            this.setState((old)=>{
+                const newState = {count : old.count +1}
+                return newState;
+            })
+        },1000)
+    };
+}
+ReactDOM.render(<Component message="기본값 아님"/> , document.querySelector('#root'))
+
+```
+<br/>
+
+
 
   
     

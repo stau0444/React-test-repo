@@ -17,24 +17,80 @@
         <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
         <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
         <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-        <script type="text/babel">
         
-            //jsx
-            //jsx 는 바벨을 통해 js로 컴파일된다.
+        <script type="text/babel">
+            //funtion Component Props
+            // function Component(props){
+            //     return(
+            //             <div>
+            //                 <h1>
+            //                     {props.message} 함수 컴포넌트
+            //                 </h1>
+            //             </div>
+            //         );
+            // }
+            // ReactDOM.render(<Component message = "gege"/> ,document.querySelector('#root'));
 
+            // class Component extends React.Component{
+            //     render(){
+            //         return(
+            //             <div>
+            //                 <h1>
+            //                     {this.props.message} 클래스 컴포넌트
+            //                 </h1>
+            //              </div>
+            //         );
+            //     }
+            // }
             
-            ReactDOM.render(
-                <div>
-                    <ul>
-                        <li>React</li>
-                        <li>Vue</li>
-                    </ul>
-                </div>
-                ,
-                document.querySelector('#root')
-            )
+            //default Props 정의 
 
-            //위와 같은 문제를 해결하기 위해 JSX를 사용한다
-        </script>
+            //클래스 , 함수 모두 사용가능
+            // Component.defaultProps = {
+            //     message:'default message'
+            // }
+            // ReactDOM.render(<Component /> , document.querySelector('#root'))
+            
+            //클래스에서 state 사용
+            class Component extends React.Component{
+                //클래스에서 컴포넌트에서 state는 객체 형태이다
+                state = {
+                    count : 0 
+                };
+
+                render(){
+                    console.log('call render');
+                    return(
+                        <div>
+                            <h1>
+                                {this.props.message} 클래스 컴포넌트
+                            </h1>
+                            <p>{this.state.count}</p>
+                         </div>
+                    );
+                }
+
+                componentDidMount(){
+                    setTimeout(()=>{
+                        //state 수정 방식 1
+                        this.setState({
+                            count : this.state.count +1
+                        })
+
+                        //state 수정 방식 2
+                        this.setState((old)=>{
+                            const newState = {count : old.count +1}
+                            return newState;
+                        })
+                    },1000)
+                };
+
+                static defaultProps = {
+                    message : 'static default'
+                }
+            }
+            ReactDOM.render(<Component message="기본값 아님"/> , document.querySelector('#root'))
+
+       </script>
     </body>
 </html>
