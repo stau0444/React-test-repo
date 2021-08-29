@@ -10,7 +10,9 @@
 - [JSX](#JSX)
 - [Props 와 State](#Props와-State)
 - [Event Handling](#Event-Handling)
-
+- [Component LifeCycle](#Component-LifeCycle)
+ 
+#
 <br/>
 
 > 프레임워크 별 비교
@@ -443,6 +445,139 @@ class Comp2 extends React.Component{
 ReactDOM.render(<Comp2/> , document.querySelector('#root2'))
 ```
 <br/>
+
+#
+### Component LifeCycle
+#
+
+>리액트 컴포넌트는 생성부터 소멸까지 여러지점에서 개발자가 작업이 가능하도록 메서드를 오버라이딩 할 수 있게 해준다.
+
+<br/>
+
+![declarative](https://miro.medium.com/max/1400/1*fdGC22mqWBAQ7jOFPPAvIg.png) 
+
+(출처 : https://medium.com/@ralph1786/intro-to-react-component-lifecycle-ac52bf6340c)
+
+    *React v16.3 이전의 Lifecycle
+
+    1.initialization
+    - 생성자 함수가 호출되면서 props가 셋팅되고 state의 초기값이 설정됨 컴포넌트가 객체화 되는 시점
+
+    2.Mounting
+    - 실제로 컴포넌트가 그려지는 구간
+    - componentWillMount: render 직전
+    - render: 화면에 컴포넌트가 그려짐
+    - componentDidMount: render 직후
+
+    3.updation   
+    -컴포넌트의 props 혹은 state가 변경되어 render가 다시 호출됨
+    - componentWillReceiveProps : props가 변경되면 가장 먼저 호출된다.(state 변경때는 호출 안됨)
+    - shouldCOmpnentUpdate : 컴포넌트가 업데이터 되어야할지 말아야할지 결정하는 시점 
+    - componentWillUpdate : 컴포넌트 업데이트 되기 직전
+    - render : 변경된값으로 컴포넌트가 다시 render됨
+    - componentWillUpdate : 컴포넌트 업데이트 되기 직전
+
+    4.unmounting
+    - componentWillUnmount: 컴포넌트가 사라지기 직전
+
+<br/>
+
+```js
+//initialization && Mounting
+
+class Comp extends React.Component{
+    state = {
+            age : 200
+        }
+
+    interval = null;
+
+    /*1.initialization && Mounting*/
+
+    constructor(props){
+        super(props);
+        console.log('constructor',props);
+    }
+
+    render(){
+        console.log('render')
+        return(
+                <div>
+                    <h2>render()</h2>
+                    <h3>hello {this.props.name} - {this.state.age}</h3>
+                </div>
+        )
+    }
+    componentWillMount(){
+        console.log('componentWillMount')
+    }
+    componentDidMount(){
+        console.log('componentDitMount')
+        //타이머 , api 요청등을 한다.
+
+        this.interval = setInterval(()=>{
+            //state가 변경되면 render()가 다시 실행된다.
+            this.setState(old=>({age: old.age +1}))
+        },1000);
+    }
+
+    /*2. updation*/
+
+    //바뀔 Props를 받는 시점
+    componentWillReceiveProps(nextProps){
+        console.log(
+            'componentWillReceiveProps' ,
+            nextProps     
+        )
+        //만약 이안에서 state를 변경하게된다면
+        //하나의 변경으로 state와 props가 함께 변경된다.  
+    }
+
+    // 컴포넌트가 업데이트될지 말지를 결정하는 시점
+    // boolean 값을 리턴하여 결정해줘야한다. 
+    // 랜더가 발생할지를 효율적으로 관리할 수 있다.
+    // false 면 값은 바뀌지만 화면은 바뀌지 않는다
+    // default 리턴값은 true 이다.
+    shouldComponentUpdate(nextProps,nextState){
+        console.log(
+            'shouldComponentUpdate',
+            nextProps,
+            nextState    
+        )
+        return false;
+    }
+
+    //컴포넌트 업데이트 직전 시점
+    componentWillUpdate(nextProps , nextState){
+        console.log(
+            'componentWillUpdate',
+            nextProps,
+            nextState
+        )
+    }
+
+    //컴포넌트 업데이트 이후 시점
+    componentDidUpdate(prevProps , prevState){
+        console.log(
+            'componentDidUpdate',
+            prevProps,
+            prevState
+        )
+    }
+
+
+    /*3.Unmount*/
+    
+    //메모리상에 컴포넌트가 사용하고 있는 것을 정리하거나 
+    //컴포넌트에서 api 요청이 일어나고 응답을 받기전에 
+    //컴포넌트가 unmount 된다면 요청을 abort시키는 것을 
+    //정의할 수 있다
+    componentWillUnmount(){
+        clearInterval(this.interval);
+    }
+}
+ReactDOM.render(<Comp name = 'UGO'/>, document.querySelector('#root'))
+```
 
 
 
