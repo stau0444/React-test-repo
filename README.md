@@ -2,7 +2,7 @@
 ## React
 #
 
-## 링크
+### 개념
 - [React concpet](#React-concept)
 - [React 핵심 모듈(React와 ReactDOM)](#React-핵심-모듈)
 - [class Component와 function Component](#class-Component와-function-Component)
@@ -12,6 +12,9 @@
 - [Event Handling](#Event-Handling)
 - [Component LifeCycle](#Component-LifeCycle)
  
+### 리액트 프로젝트 생성
+- [Create React App](#Create-React-App)
+
 #
 <br/>
 
@@ -29,8 +32,7 @@
 #
 
 >1.Component based development   
--내장되어 있는 태그들을 조합하여 컴포넌트를 만들고 그 안에 동작(js),스타일(css),문서(html)을    
-조합하여 재활용하는 방식을 말한다.
+-내장되어 있는 태그들을 조합하여 컴포넌트를 만들고 그 안에 동작(js),스타일(css),문서(html)을 조합하여 재활용하는 방식을 말한다.
 
 </br>
 
@@ -52,7 +54,7 @@
  ```
 
  >2.Virtual DOM    
- -DOM에대한 제어를 React에 맡기고 React는 가상의 돔 트리를 사용해서   
+ -DOM에 대한 제어를 React에 맡기고 React는 가상의 돔 트리를 사용해서   
  이전과 이후 상태를 비교하여 바뀐 부분(diff)를 찾아내어 Re-render 한다.
 
 </br>
@@ -458,7 +460,7 @@ ReactDOM.render(<Comp2/> , document.querySelector('#root2'))
 
 (출처 : https://medium.com/@ralph1786/intro-to-react-component-lifecycle-ac52bf6340c)
 
-    *React v16.3 이전의 Lifecycle
+    * React v16.3 이전의 Lifecycle
 
     1.initialization
     - 생성자 함수가 호출되면서 props가 셋팅되고 state의 초기값이 설정됨 컴포넌트가 객체화 되는 시점
@@ -578,6 +580,187 @@ class Comp extends React.Component{
 }
 ReactDOM.render(<Comp name = 'UGO'/>, document.querySelector('#root'))
 ```
+
+<br/>
+
+
+    * React v16.3 이후의 Lifecycle 변경사항
+
+   ```js
+     /*
+        1.componentWillMount,componentWillReceiveProps => getDerivedStateFromProps
+
+        - 일반 메서드가 아니라 클래스 컴포넌트의 static 메서드로 지정해 줘야한다.
+        - 파라미터로 바뀔 props 값과 이전 state값을 갖는다.
+        - 시간의 흐름에 따라 변경되는 Props에 state가 의존하는 경우에 사용한다.
+        - return 값이 필요하고 아무것도 하지 않을 경우 undefind가 아닌 null 
+          이 리턴되야한다.
+        - componentWillReceiveProps는 props 변경시에만 호출 되었지만
+        getDerivedStateFromProps는 props , state 변경시에  
+        호출된다.
+
+        *16.3 이전 훅과 이후 훅을 함께 쓸 수 없다.
+    */
+
+    // componentWillMount(){
+    //     console.log('componentWillMount')
+    // }
+
+    static getDerivedStateFromProps(nextProps,prevState){
+        console.log(nextProps,prevState);
+        return null;
+    }
+
+    /*
+        2.componentWillUpdate => getSnapshotBeforeUpdate
+
+        - getSnapshotBeforeUpdate는 업데이트된 내용이 re-render 
+         되기 이전에  update 이전의 값에 대해서 snapshot을 찍어 놓는다.
+
+        - getSnapshotBeforeUpdate에서 찍힌 snapshot은 업데이트 이후
+         시점을 관리하는 훅인 componentDidUpdate의 파라미터로 받아서
+         사용할 수 있다.
+    */
+
+    // getSnapshotBeforeUpdate 예시
+
+    //업데이트 이전의 마우스 스크롤 값을 스냅샷 하고 있다.
+    getSnapshotBeforeUpdate(prevProps, prevState){
+        if(prevState.list.length === this.state.list.length) return null;
+        const list = document.querySelector('#list');
+        return list.scrollHeight -list.scrollTop;
+    }
+    //업데이트 이후의 스크롤 값을 업데이트 이전값(snapshot)과 비교하여 
+    //scrollTop을 설정해주고 있다.
+    componentDidUpdate(prevProps,prevState , snapshot){
+        if(snapshot === null) return;
+        const list = document.querySelector('#list');
+        list.scrollTop = list.scrollHeight - snapshot;
+    }
+
+    /*
+        3.componentDidCatch 추가
+
+        - componentDidCatch를 이용하면 componentDidCatch가 일어난
+          하위 컴포넌트에서 에러가 발생했을 때 부모 컴포넌트에서 error를 처리할 수 있다.
+
+    */
+    
+    // componentDidCatch 예시
+    //App 컴포넌트의 하위 컴포넌트인 WebService에 에러가 발생하면
+    //componentDidCatch가 호출된다.
+    //this.state의 hasError는 true가 되고
+    //render()에서 if 문 안으로 들어가게 된다.
+    
+    //상위 컴포넌트에서 하위 컴포넌트의 에러가 관리되는 범위를 Error Bounderies라고 하고 
+    //Error Bounderies는 최상위 컴포넌트에 위치하는 것이 좋다.
+   class App extends React.Component{
+    state = {
+        hasError: false
+    };
+
+    render(){
+        if(this.state.hasError){
+            return <div>예상치 못한 에러 발생</div>
+        }
+        return <WebService/>;
+    }
+    /
+    componentDidCatch(error, info){
+        this.setState({hasError : true})
+    }
+}
+   ``` 
+
+#
+### Create React App
+#
+
+> React , ReactDOM을 편하게 사용할 수 있도록 프로젝트를 생성하고 , 개발에 필요한 여러가지 기능을 제공하는 역할을 한다.
+
+<br/>
+
+npx
+> npm 5.2.0 이상부터 함께 설치되는 커맨드라인 명령어로 라이브러리를 현재 최신버전으로 확인하여 받아주고 , 실행해주는 역할을 한다.
+
+<br/>
+
+```js
+//리액트 앱 생성 명령어 
+//node js 기반의 react project가 생성된다.
+npx create-react-app ugo-app
+
+/*
+    create-react-app 으로 프로젝트 생성시 
+    기본적으로 추가되는 dependency
+*/
+
+"dependencies": {
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^12.8.3",
+    
+    //react 핵심 모듈
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    /*
+        - react-scripts
+
+        개발환경으로 띄우거나 배포를 위한 빌드작업등 
+        프로젝트 react-create-app에서 
+        프로젝트 관리역할을 하는 라이브러리
+        react-scripts의 버전은 
+        react-create-app의 버전과 같다,
+    */
+    "react-scripts": "4.0.3",
+    //google에서 사이트 경험을 측정하고 개선할 수 있도록 
+    //정보를 얻어내는 역할을 하는 라이브러리
+    "web-vitals": "^1.1.2"
+}
+
+
+/*
+    create-react-app의 명령어
+*/
+
+"scripts": {
+    //로컬에 개발 서버를 띄워준다.
+    "start": "react-scripts start",
+    /*
+        - 프로젝트를 build 한다.
+        - build 라는 폴더가 생성되며 프로덕션용 파일이 저장된다.
+        - 아래 명령어로 build 폴더를 파일서버에 띄워 프로덕션 모드로 확인할 수 있다.
+        - npx serve -s build  
+        (-s 는 어떤 요청에도 index.html을 응답하도록 하는 설정이며 
+        SPA를 의미한다)
+    */
+    "build": "react-scripts build",
+    /*
+        -test 코드를 실행한다
+        -create-react-app  jest 라이브러리를 기반으로 테스트를 한다.
+    */
+    "test": "react-scripts test",
+    /*
+       - create-react-app의 관리를 받지고 싶을때 eject 한다.
+       - 커스텀한 설정이 필요할 경우에 사용한다.
+       - eject 할 경우 config 폴더가 생성되고 여러가지 라이브러리에 대한
+         설정 파일들이 들어가 있다.
+    */
+    "eject": "react-scripts eject"
+
+}
+```
+   
+
+
+
+    
+    
+
+
+
+
+
 
 
 
