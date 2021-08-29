@@ -9,6 +9,7 @@
 - [React.CreateElement()](#React.CreateElement())
 - [JSX](#JSX)
 - [Props 와 State](#Props와-State)
+- [Event Handling](#Event-Handling)
 
 <br/>
 
@@ -369,6 +370,81 @@ ReactDOM.render(<Component message="기본값 아님"/> , document.querySelector
 
 ```
 <br/>
+
+#
+### Event Handling
+#
+
+> HTML DOM 에 클릭하면 이벤트가 발생하고, 그에 맞는 변경이 일어나도록 이벤트를 Handling 한다. Recat에서는 JSX에 이벤트를 설정할 수 있다.    
+
+<br/>
+
+    특징
+    1.이벤트 명을 camelCase 로만 사용할 수 있다
+    2.이벤트에 연결된 자바스크립트 코드는 함수이다 . 
+    3.실제 DOM 요소에만 사용 간으하다.
+
+
+<br/>
+
+```js
+
+//function Component EventHandling
+function Comp(){
+    return (
+            <div>
+                <button onClick={()=>{
+                    console.log('clicked')
+                }}>클릭</button>
+            </div>
+            )
+}
+
+ReactDOM.render(<Comp/> , document.querySelector('#root'));
+
+//class Component EventHandling
+class Comp2 extends React.Component{
+    state = {
+        count :0
+    }
+    //일반 함수 click()에 this를 바인딩하기 위한 방법 1
+    constructor(props){
+        super(props);
+        //클래스의 this 를 click()의 this에 바인딩 시킨다.
+        this.click = this.click.bind(this);
+    }
+
+    render(){
+        return(
+            <div>
+                <p>{this.state.count}</p>
+                <button onClick = {this.click}>
+                plus
+                </button>
+            </div>
+        )    
+    }
+
+
+    /*
+    일반 함수는 호출 위치에 따라 this 가 정의되고
+    화살표 함수는 자신이 선언된 함수 범위에서 this가 정의된다.
+    */
+
+    click=()=>{
+        this.setState((old)=>{
+            const newCount = {
+                count: old.count +1
+            };
+            return newCount;
+        })
+    }
+}
+ReactDOM.render(<Comp2/> , document.querySelector('#root2'))
+```
+<br/>
+
+
 
 
 
