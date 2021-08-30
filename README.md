@@ -1,43 +1,50 @@
 #
+
 ## React
+
 #
 
 ### 개념
+
 - [React concpet](#React-concept)
 - [React 핵심 모듈(React와 ReactDOM)](#React-핵심-모듈)
 - [class Component와 function Component](#class-Component와-function-Component)
-- [React.CreateElement()](#React.CreateElement())
+- [React.CreateElement()](<#React.CreateElement()>)
 - [JSX](#JSX)
 - [Props 와 State](#Props와-State)
 - [Event Handling](#Event-Handling)
 - [Component LifeCycle](#Component-LifeCycle)
- 
+
 ### 리액트 프로젝트 생성
+
 - [Create React App](#Create-React-App)
+- [의존 라이브러리들](#Create-React-App-dependencies)
 
 #
+
 <br/>
 
 > 프레임워크 별 비교
 
-종류|angular | react | vue
---|--|--|--
-특징|거의 모든기능(인증 , 테스트 등등 ..)이 프레임워크 안에 들어있다|View를 업데이트 하는 것에 초점이 맞춰져 있다.|angular의 특징과 react의 특징을 모두 실현하려한다.
-지향|framework지향 | library지향 | 둘다 지향sCode
+| 종류 | angular                                                         | react                                         | vue                                                |
+| ---- | --------------------------------------------------------------- | --------------------------------------------- | -------------------------------------------------- |
+| 특징 | 거의 모든기능(인증 , 테스트 등등 ..)이 프레임워크 안에 들어있다 | View를 업데이트 하는 것에 초점이 맞춰져 있다. | angular의 특징과 react의 특징을 모두 실현하려한다. |
+| 지향 | framework지향                                                   | library지향                                   | 둘다 지향sCode                                     |
 
 #
 
 #
+
 ### React concept
+
 #
 
->1.Component based development   
--내장되어 있는 태그들을 조합하여 컴포넌트를 만들고 그 안에 동작(js),스타일(css),문서(html)을 조합하여 재활용하는 방식을 말한다.
+> 1.Component based development  
+> -내장되어 있는 태그들을 조합하여 컴포넌트를 만들고 그 안에 동작(js),스타일(css),문서(html)을 조합하여 재활용하는 방식을 말한다.
 
 </br>
 
- 
- ```html
+```html
 //component란?
 
 <!-- HTMLElement -->
@@ -51,33 +58,34 @@
 
 <컴포넌트이름 name = 'Ugo'>
 <컴포넌트이름 prop = {false}>내용</컴포넌트이름>
- ```
+```
 
- >2.Virtual DOM    
- -DOM에 대한 제어를 React에 맡기고 React는 가상의 돔 트리를 사용해서   
- 이전과 이후 상태를 비교하여 바뀐 부분(diff)를 찾아내어 Re-render 한다.
-
-</br>
-
-
-![virtual dom](https://i2.wp.com/programmingwithmosh.com/wp-content/uploads/2018/11/lnrn_0201.png?fit=1173%2C785&ssl=1) 
+> 2.Virtual DOM  
+>  -DOM에 대한 제어를 React에 맡기고 React는 가상의 돔 트리를 사용해서  
+>  이전과 이후 상태를 비교하여 바뀐 부분(diff)를 찾아내어 Re-render 한다.
 
 </br>
 
- >3.React Client Side Rendering(CSR)   
-  React는 javascript로 이루어진 애플리케이션이기 때문에 리액트로 만들어진 웹서비스에   
-  접근할때 js 파일이 다운 받아져야지 실행이 가능하다 이루어진다   
-  
-  -CSR 과정
+![virtual dom](https://i2.wp.com/programmingwithmosh.com/wp-content/uploads/2018/11/lnrn_0201.png?fit=1173%2C785&ssl=1)
 
-  1.유저가 ReactApp에 접근시 빈 Html이 먼저 다운 받아지고   
-  2.다음으로 Html에 정의된 JS파일을 요청한다.   
-  3.브라우저는 다운받은 js 파일(리액트앱)을 실행하고    
-  4.리액트 컴포넌트들이 화면에 그려진다   
-  5.Page  Viewable Interactable .   
+</br>
+
+> 3.React Client Side Rendering(CSR)  
+>  React는 javascript로 이루어진 애플리케이션이기 때문에 리액트로 만들어진 웹서비스에  
+>  접근할때 js 파일이 다운 받아져야지 실행이 가능하다 이루어진다
+
+-CSR 과정
+
+1.유저가 ReactApp에 접근시 빈 Html이 먼저 다운 받아지고  
+ 2.다음으로 Html에 정의된 JS파일을 요청한다.  
+ 3.브라우저는 다운받은 js 파일(리액트앱)을 실행하고  
+ 4.리액트 컴포넌트들이 화면에 그려진다  
+ 5.Page Viewable Interactable .
 
 #
+
 ### React 핵심 모듈
+
 #
 
 ```js
@@ -87,7 +95,7 @@ import ReactDOM from 'react-dom';
 //2. 리액트 컴포넌트 생성
 import React from 'react';
 
-//js , jsx 로 만들어진 컴포넌트를 
+//js , jsx 로 만들어진 컴포넌트를
 //HTMLElement에 연결
 ReactDOM.render(
     <HelloMsg name = "Ugo"/>
@@ -108,81 +116,81 @@ class HelloMsg extends React.Component{
 ```
 
 #
+
 ### class Component와 function Component
+
 #
 
->1.컴포넌트 생성 , 사용
+> 1.컴포넌트 생성 , 사용
 
 ```js
 //1.class 컴포넌트 정의
 //React 컴포넌트로 선언 (React.Compent 상속)
-class ClassComponent extends React.Component{
-    render(){
-        return <div>ClassComponent</div>;
-    }
+class ClassComponent extends React.Component {
+  render() {
+    return <div>ClassComponent</div>;
+  }
 }
 
 //컴포넌트 사용
-ReactDOM.render(<ClassComponent/>,document.querySelector('#root'));
+ReactDOM.render(<ClassComponent />, document.querySelector("#root"));
 
 //2.function 컴포넌트 정의
 
-//정의1 
-function FunctionComponent(){
-    //jsx를 리턴해줘야 한다.
-    return <div>Hello</div>;
+//정의1
+function FunctionComponent() {
+  //jsx를 리턴해줘야 한다.
+  return <div>Hello</div>;
 }
 
 //정의2
 const FunctionComponent = () => <div>Hello</div>;
 
 //컴포넌트 사용
-ReactDOM.render(<FunctionComponent/>,document.querySelector('#root'));
-        
+ReactDOM.render(<FunctionComponent />, document.querySelector("#root"));
 ```
 
 #
+
 ### React.CreateElement()
+
 #
 
 > React에서 요소를 만들어내는 메서드이다 파라미터 첫번째 인자로 리액트 컴포넌트,
-두번째로 props, 세번째는 자식으로 넣어줄 요소들이 들어간다.
+> 두번째로 props, 세번째는 자식으로 넣어줄 요소들이 들어간다.
 
 ```js
 React.createElement(
-    type, //태그 이름 문자열 | 리액트 컴포넌트 자체 | React.Fragment
-    [props], //리액트 컴포넌트에 넣을 데이터 객체
-    [...children] //자식으로 넣어주는 요소들
-)
+  type, //태그 이름 문자열 | 리액트 컴포넌트 자체 | React.Fragment
+  [props], //리액트 컴포넌트에 넣을 데이터 객체
+  [...children] //자식으로 넣어주는 요소들
+);
 
-//1. 태그이름 문자열으로 컴포넌트 생성 
+//1. 태그이름 문자열으로 컴포넌트 생성
 ReactDOM.render(
-    React.createElement('h1',null,`태그이름 문자열 타입`),
-    document.querySelector('#root')
-)
+  React.createElement("h1", null, `태그이름 문자열 타입`),
+  document.querySelector("#root")
+);
 
 //2.리액트 컴포넌트 타입
 const Component = () => <h1>리액트 컴포넌트 타입</h1>;
 
-ReactDOM.render(
-    <Component/>,
-    document.querySelector('#root')
-)
+ReactDOM.render(<Component />, document.querySelector("#root"));
 
 //3.React.Fragment
-//특정 요소를 만들어내지 않고 
-//원하는 위치에 바로 자식요소를 배열쳐렴 녛고 싶을 때 
+//특정 요소를 만들어내지 않고
+//원하는 위치에 바로 자식요소를 배열쳐렴 녛고 싶을 때
 //Fragment를 사용한다.
 ReactDOM.render(
-    React.createElement(
-        React.Fragment,
-        null,
-        `<button>1</button>`,
-        `<button>2</button>`,
-        `<button>3</button>`
-    ),
-    document.querySelector('#root')
-)
+  React.createElement(
+    React.Fragment,
+    null,
+    `<button>1</button>`,
+    `<button>2</button>`,
+    `<button>3</button>`
+  ),
+  document.querySelector("#root")
+);
 
 // 4. 복잡한 리액트 엘리먼트 모임 (createElement의 한계)
 // <div>
@@ -196,22 +204,30 @@ ReactDOM.render(
 //같은 코드가 반복된다
 //가독성이 낮다
 ReactDOM.render(
-    React.createElement('div',null,
-        React.createElement('ul',null,
-            React.createElement(React.Fragment,null,
-                React.createElement('li',null,`REACT`),
-                React.createElement('li',null,`VUE`),
-            )
-        )
-    ),
-    document.querySelector('#root')
-)
+  React.createElement(
+    "div",
+    null,
+    React.createElement(
+      "ul",
+      null,
+      React.createElement(
+        React.Fragment,
+        null,
+        React.createElement("li", null, `REACT`),
+        React.createElement("li", null, `VUE`)
+      )
+    )
+  ),
+  document.querySelector("#root")
+);
 
 //위와 같은 문제를 해결하기 위해 JSX를 사용한다
 ```
 
 #
+
 ### JSX
+
 #
 
 > 리액트에서 요소를 만들때 사용하는 문법이다 . 가독성이 좋다. jsx 는 바벨을 통해 js로 컴파일되기 때문에 문법적 오류를 인지하기 쉽다.
@@ -232,9 +248,10 @@ ReactDOM.render(
 //아래 사이트에서 babel을 통해 jsx가 js 로 변환되는 것을 확인할 수 있다
 https://babeljs.io/
 ```
+
 <br/>
 
->JSX 문법 정리
+> JSX 문법 정리
 
 ```js
 1. 최상위 요소는 하나여야 한다.
@@ -249,11 +266,13 @@ https://babeljs.io/
 ```
 
 #
+
 ### Props와 State
+
 #
 
->Props는 컴포넌트 외부에서 컴포넌트에게 전달하는 데이터를 말하고 , 
-State는 컴포넌트 내부에서 변경할 수 있는 데이터를 말한다. Props 와 State에 변경이 일어날 시 컴포넌트는 해당 변경 사항을  re-render 하려한다.
+> Props는 컴포넌트 외부에서 컴포넌트에게 전달하는 데이터를 말하고 ,
+> State는 컴포넌트 내부에서 변경할 수 있는 데이터를 말한다. Props 와 State에 변경이 일어날 시 컴포넌트는 해당 변경 사항을 re-render 하려한다.
 
 <br/>
 
@@ -265,198 +284,195 @@ State는 컴포넌트 내부에서 변경할 수 있는 데이터를 말한다. 
 
 <br/>
 
-#### Props 전달과 사용  
+#### Props 전달과 사용
+
 <br/>
 
 ```js
 //----funtion Component Props----
 //함수 컴포넌트에서는 Props가 파라미터로 들어온다
-function Component(props){
-    return(
-            <div>
-                <h1>
-                    {props.message} 함수 컴포넌트
-                </h1>
-            </div>
-        );
+function Component(props) {
+  return (
+    <div>
+      <h1>{props.message} 함수 컴포넌트</h1>
+    </div>
+  );
 }
-ReactDOM.render(<Component message = "gege"/> ,document.querySelector('#root'));
-
+ReactDOM.render(<Component message="gege" />, document.querySelector("#root"));
 
 //----class Compent Props----
 //클래스 컴포넌트에서는 this의 props라는 필드로 props가 들어온다,
-class Component extends React.Component{
-    render(){
-        return(
-            <div>
-                <h1>
-                    {this.props.message} 클래스 컴포넌트
-                </h1>
-            </div>
-        );
-    }
+class Component extends React.Component {
+  render() {
+    return (
+      <div>
+        <h1>{this.props.message} 클래스 컴포넌트</h1>
+      </div>
+    );
+  }
 }
-ReactDOM.render(<Component message='hihi'/> , document.querySelector('#root'))
-
+ReactDOM.render(<Component message="hihi" />, document.querySelector("#root"));
 
 //----default Props 정의----
 
 //클래스 , 함수 모두 사용가능
 Component.defaultProps = {
-    message:'default message'
-}
-ReactDOM.render(<Component /> , document.querySelector('#root'))
+  message: "default message",
+};
+ReactDOM.render(<Component />, document.querySelector("#root"));
 
 //클래스에서만 사용가능
-class Component extends React.Component{
-    render(){
-        return(
-            <div>
-                <h1>
-                    {this.props.message} 클래스 컴포넌트
-                </h1>
-                </div>
-        );
-    }
-    static defaultProps = {
-        message : 'static default'
-    }
+class Component extends React.Component {
+  render() {
+    return (
+      <div>
+        <h1>{this.props.message} 클래스 컴포넌트</h1>
+      </div>
+    );
+  }
+  static defaultProps = {
+    message: "static default",
+  };
 }
 ```
 
 <br/>
 
-### State 
+### State
 
 <br/>
 
 ```js
-
 //클래스 컴포넌트에서 state 정의, 사용  ,수정
 
-class Component extends React.Component{
-    //state 정의
-    //클래스에서 컴포넌트에서 state는 객체 형태이다
-    state = {
-        count : 0 
-    };
+class Component extends React.Component {
+  //state 정의
+  //클래스에서 컴포넌트에서 state는 객체 형태이다
+  state = {
+    count: 0,
+  };
 
-    render(){
-        return(
-            <div>
-                <h1>
-                    {this.props.message} 클래스 컴포넌트
-                </h1>
-                //state 사용
-                <p>{this.state.count}</p>
-                </div>
-        );
-    }
-    componentDidMount(){
-        setTimeout(()=>{
-            //state 수정 시에는 setState를 통해 수정해야한다.
+  render() {
+    return (
+      <div>
+        <h1>{this.props.message} 클래스 컴포넌트</h1>
+        //state 사용
+        <p>{this.state.count}</p>
+      </div>
+    );
+  }
+  componentDidMount() {
+    setTimeout(() => {
+      //state 수정 시에는 setState를 통해 수정해야한다.
 
-            //state 수정 방식 1
-            this.setState({
-                count : this.state.count +1
-            })
+      //state 수정 방식 1
+      this.setState({
+        count: this.state.count + 1,
+      });
 
-            //state 수정 방식 2
-            //이전의 값을 활용해서 새로운 값을 만든다.
-            this.setState((old)=>{
-                const newState = {count : old.count +1}
-                return newState;
-            })
-        },1000)
-    };
+      //state 수정 방식 2
+      //이전의 값을 활용해서 새로운 값을 만든다.
+      this.setState((old) => {
+        const newState = { count: old.count + 1 };
+        return newState;
+      });
+    }, 1000);
+  }
 }
-ReactDOM.render(<Component message="기본값 아님"/> , document.querySelector('#root'))
-
+ReactDOM.render(
+  <Component message="기본값 아님" />,
+  document.querySelector("#root")
+);
 ```
+
 <br/>
 
 #
+
 ### Event Handling
+
 #
 
-> HTML DOM 에 클릭하면 이벤트가 발생하고, 그에 맞는 변경이 일어나도록 이벤트를 Handling 한다. Recat에서는 JSX에 이벤트를 설정할 수 있다.    
+> HTML DOM 에 클릭하면 이벤트가 발생하고, 그에 맞는 변경이 일어나도록 이벤트를 Handling 한다. Recat에서는 JSX에 이벤트를 설정할 수 있다.
 
 <br/>
 
     특징
     1.이벤트 명을 camelCase 로만 사용할 수 있다
-    2.이벤트에 연결된 자바스크립트 코드는 함수이다 . 
+    2.이벤트에 연결된 자바스크립트 코드는 함수이다 .
     3.실제 DOM 요소에만 사용 간으하다.
-
 
 <br/>
 
 ```js
-
 //function Component EventHandling
-function Comp(){
-    return (
-            <div>
-                <button onClick={()=>{
-                    console.log('clicked')
-                }}>클릭</button>
-            </div>
-            )
+function Comp() {
+  return (
+    <div>
+      <button
+        onClick={() => {
+          console.log("clicked");
+        }}
+      >
+        클릭
+      </button>
+    </div>
+  );
 }
 
-ReactDOM.render(<Comp/> , document.querySelector('#root'));
+ReactDOM.render(<Comp />, document.querySelector("#root"));
 
 //class Component EventHandling
-class Comp2 extends React.Component{
-    state = {
-        count :0
-    }
-    //일반 함수 click()에 this를 바인딩하기 위한 방법 1
-    constructor(props){
-        super(props);
-        //클래스의 this 를 click()의 this에 바인딩 시킨다.
-        this.click = this.click.bind(this);
-    }
+class Comp2 extends React.Component {
+  state = {
+    count: 0,
+  };
+  //일반 함수 click()에 this를 바인딩하기 위한 방법 1
+  constructor(props) {
+    super(props);
+    //클래스의 this 를 click()의 this에 바인딩 시킨다.
+    this.click = this.click.bind(this);
+  }
 
-    render(){
-        return(
-            <div>
-                <p>{this.state.count}</p>
-                <button onClick = {this.click}>
-                plus
-                </button>
-            </div>
-        )    
-    }
+  render() {
+    return (
+      <div>
+        <p>{this.state.count}</p>
+        <button onClick={this.click}>plus</button>
+      </div>
+    );
+  }
 
-
-    /*
+  /*
     일반 함수는 호출 위치에 따라 this 가 정의되고
     화살표 함수는 자신이 선언된 함수 범위에서 this가 정의된다.
     */
 
-    click=()=>{
-        this.setState((old)=>{
-            const newCount = {
-                count: old.count +1
-            };
-            return newCount;
-        })
-    }
+  click = () => {
+    this.setState((old) => {
+      const newCount = {
+        count: old.count + 1,
+      };
+      return newCount;
+    });
+  };
 }
-ReactDOM.render(<Comp2/> , document.querySelector('#root2'))
+ReactDOM.render(<Comp2 />, document.querySelector("#root2"));
 ```
+
 <br/>
 
 #
+
 ### Component LifeCycle
+
 #
 
->리액트 컴포넌트는 생성부터 소멸까지 여러지점에서 개발자가 작업이 가능하도록 메서드를 오버라이딩 할 수 있게 해준다.
+> 리액트 컴포넌트는 생성부터 소멸까지 여러지점에서 개발자가 작업이 가능하도록 메서드를 오버라이딩 할 수 있게 해준다.
 
 <br/>
 
-![declarative](https://miro.medium.com/max/1400/1*fdGC22mqWBAQ7jOFPPAvIg.png) 
+![declarative](https://miro.medium.com/max/1400/1*fdGC22mqWBAQ7jOFPPAvIg.png)
 
 (출처 : https://medium.com/@ralph1786/intro-to-react-component-lifecycle-ac52bf6340c)
 
@@ -471,10 +487,10 @@ ReactDOM.render(<Comp2/> , document.querySelector('#root2'))
     - render: 화면에 컴포넌트가 그려짐
     - componentDidMount: render 직후
 
-    3.updation   
+    3.updation
     -컴포넌트의 props 혹은 state가 변경되어 render가 다시 호출됨
     - componentWillReceiveProps : props가 변경되면 가장 먼저 호출된다.(state 변경때는 호출 안됨)
-    - shouldCOmpnentUpdate : 컴포넌트가 업데이터 되어야할지 말아야할지 결정하는 시점 
+    - shouldCOmpnentUpdate : 컴포넌트가 업데이터 되어야할지 말아야할지 결정하는 시점
     - componentWillUpdate : 컴포넌트 업데이트 되기 직전
     - render : 변경된값으로 컴포넌트가 다시 render됨
     - componentWillUpdate : 컴포넌트 업데이트 되기 직전
@@ -487,193 +503,180 @@ ReactDOM.render(<Comp2/> , document.querySelector('#root2'))
 ```js
 //initialization && Mounting
 
-class Comp extends React.Component{
-    state = {
-            age : 200
-        }
+class Comp extends React.Component {
+  state = {
+    age: 200,
+  };
 
-    interval = null;
+  interval = null;
 
-    /*1.initialization && Mounting*/
+  /*1.initialization && Mounting*/
 
-    constructor(props){
-        super(props);
-        console.log('constructor',props);
-    }
+  constructor(props) {
+    super(props);
+    console.log("constructor", props);
+  }
 
-    render(){
-        console.log('render')
-        return(
-                <div>
-                    <h2>render()</h2>
-                    <h3>hello {this.props.name} - {this.state.age}</h3>
-                </div>
-        )
-    }
-    componentWillMount(){
-        console.log('componentWillMount')
-    }
-    componentDidMount(){
-        console.log('componentDitMount')
-        //타이머 , api 요청등을 한다.
+  render() {
+    console.log("render");
+    return (
+      <div>
+        <h2>render()</h2>
+        <h3>
+          hello {this.props.name} - {this.state.age}
+        </h3>
+      </div>
+    );
+  }
+  componentWillMount() {
+    console.log("componentWillMount");
+  }
+  componentDidMount() {
+    console.log("componentDitMount");
+    //타이머 , api 요청등을 한다.
 
-        this.interval = setInterval(()=>{
-            //state가 변경되면 render()가 다시 실행된다.
-            this.setState(old=>({age: old.age +1}))
-        },1000);
-    }
+    this.interval = setInterval(() => {
+      //state가 변경되면 render()가 다시 실행된다.
+      this.setState((old) => ({ age: old.age + 1 }));
+    }, 1000);
+  }
 
-    /*2. updation*/
+  /*2. updation*/
 
-    //바뀔 Props를 받는 시점
-    componentWillReceiveProps(nextProps){
-        console.log(
-            'componentWillReceiveProps' ,
-            nextProps     
-        )
-        //만약 이안에서 state를 변경하게된다면
-        //하나의 변경으로 state와 props가 함께 변경된다.  
-    }
+  //바뀔 Props를 받는 시점
+  componentWillReceiveProps(nextProps) {
+    console.log("componentWillReceiveProps", nextProps);
+    //만약 이안에서 state를 변경하게된다면
+    //하나의 변경으로 state와 props가 함께 변경된다.
+  }
 
-    // 컴포넌트가 업데이트될지 말지를 결정하는 시점
-    // boolean 값을 리턴하여 결정해줘야한다. 
-    // 랜더가 발생할지를 효율적으로 관리할 수 있다.
-    // false 면 값은 바뀌지만 화면은 바뀌지 않는다
-    // default 리턴값은 true 이다.
-    shouldComponentUpdate(nextProps,nextState){
-        console.log(
-            'shouldComponentUpdate',
-            nextProps,
-            nextState    
-        )
-        return false;
-    }
+  // 컴포넌트가 업데이트될지 말지를 결정하는 시점
+  // boolean 값을 리턴하여 결정해줘야한다.
+  // 랜더가 발생할지를 효율적으로 관리할 수 있다.
+  // false 면 값은 바뀌지만 화면은 바뀌지 않는다
+  // default 리턴값은 true 이다.
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log("shouldComponentUpdate", nextProps, nextState);
+    return false;
+  }
 
-    //컴포넌트 업데이트 직전 시점
-    componentWillUpdate(nextProps , nextState){
-        console.log(
-            'componentWillUpdate',
-            nextProps,
-            nextState
-        )
-    }
+  //컴포넌트 업데이트 직전 시점
+  componentWillUpdate(nextProps, nextState) {
+    console.log("componentWillUpdate", nextProps, nextState);
+  }
 
-    //컴포넌트 업데이트 이후 시점
-    componentDidUpdate(prevProps , prevState){
-        console.log(
-            'componentDidUpdate',
-            prevProps,
-            prevState
-        )
-    }
+  //컴포넌트 업데이트 이후 시점
+  componentDidUpdate(prevProps, prevState) {
+    console.log("componentDidUpdate", prevProps, prevState);
+  }
 
+  /*3.Unmount*/
 
-    /*3.Unmount*/
-    
-    //메모리상에 컴포넌트가 사용하고 있는 것을 정리하거나 
-    //컴포넌트에서 api 요청이 일어나고 응답을 받기전에 
-    //컴포넌트가 unmount 된다면 요청을 abort시키는 것을 
-    //정의할 수 있다
-    componentWillUnmount(){
-        clearInterval(this.interval);
-    }
+  //메모리상에 컴포넌트가 사용하고 있는 것을 정리하거나
+  //컴포넌트에서 api 요청이 일어나고 응답을 받기전에
+  //컴포넌트가 unmount 된다면 요청을 abort시키는 것을
+  //정의할 수 있다
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
 }
-ReactDOM.render(<Comp name = 'UGO'/>, document.querySelector('#root'))
+ReactDOM.render(<Comp name="UGO" />, document.querySelector("#root"));
 ```
 
 <br/>
 
-
     * React v16.3 이후의 Lifecycle 변경사항
 
-   ```js
-     /*
-        1.componentWillMount,componentWillReceiveProps => getDerivedStateFromProps
+```js
+  /*
+     1.componentWillMount,componentWillReceiveProps => getDerivedStateFromProps
 
-        - 일반 메서드가 아니라 클래스 컴포넌트의 static 메서드로 지정해 줘야한다.
-        - 파라미터로 바뀔 props 값과 이전 state값을 갖는다.
-        - 시간의 흐름에 따라 변경되는 Props에 state가 의존하는 경우에 사용한다.
-        - return 값이 필요하고 아무것도 하지 않을 경우 undefind가 아닌 null 
-          이 리턴되야한다.
-        - componentWillReceiveProps는 props 변경시에만 호출 되었지만
-        getDerivedStateFromProps는 props , state 변경시에  
-        호출된다.
+     - 일반 메서드가 아니라 클래스 컴포넌트의 static 메서드로 지정해 줘야한다.
+     - 파라미터로 바뀔 props 값과 이전 state값을 갖는다.
+     - 시간의 흐름에 따라 변경되는 Props에 state가 의존하는 경우에 사용한다.
+     - return 값이 필요하고 아무것도 하지 않을 경우 undefind가 아닌 null
+       이 리턴되야한다.
+     - componentWillReceiveProps는 props 변경시에만 호출 되었지만
+     getDerivedStateFromProps는 props , state 변경시에
+     호출된다.
 
-        *16.3 이전 훅과 이후 훅을 함께 쓸 수 없다.
-    */
+     *16.3 이전 훅과 이후 훅을 함께 쓸 수 없다.
+ */
 
-    // componentWillMount(){
-    //     console.log('componentWillMount')
-    // }
+ // componentWillMount(){
+ //     console.log('componentWillMount')
+ // }
 
-    static getDerivedStateFromProps(nextProps,prevState){
-        console.log(nextProps,prevState);
-        return null;
-    }
+ static getDerivedStateFromProps(nextProps,prevState){
+     console.log(nextProps,prevState);
+     return null;
+ }
 
-    /*
-        2.componentWillUpdate => getSnapshotBeforeUpdate
+ /*
+     2.componentWillUpdate => getSnapshotBeforeUpdate
 
-        - getSnapshotBeforeUpdate는 업데이트된 내용이 re-render 
-         되기 이전에  update 이전의 값에 대해서 snapshot을 찍어 놓는다.
+     - getSnapshotBeforeUpdate는 업데이트된 내용이 re-render
+      되기 이전에  update 이전의 값에 대해서 snapshot을 찍어 놓는다.
 
-        - getSnapshotBeforeUpdate에서 찍힌 snapshot은 업데이트 이후
-         시점을 관리하는 훅인 componentDidUpdate의 파라미터로 받아서
-         사용할 수 있다.
-    */
+     - getSnapshotBeforeUpdate에서 찍힌 snapshot은 업데이트 이후
+      시점을 관리하는 훅인 componentDidUpdate의 파라미터로 받아서
+      사용할 수 있다.
+ */
 
-    // getSnapshotBeforeUpdate 예시
+ // getSnapshotBeforeUpdate 예시
 
-    //업데이트 이전의 마우스 스크롤 값을 스냅샷 하고 있다.
-    getSnapshotBeforeUpdate(prevProps, prevState){
-        if(prevState.list.length === this.state.list.length) return null;
-        const list = document.querySelector('#list');
-        return list.scrollHeight -list.scrollTop;
-    }
-    //업데이트 이후의 스크롤 값을 업데이트 이전값(snapshot)과 비교하여 
-    //scrollTop을 설정해주고 있다.
-    componentDidUpdate(prevProps,prevState , snapshot){
-        if(snapshot === null) return;
-        const list = document.querySelector('#list');
-        list.scrollTop = list.scrollHeight - snapshot;
-    }
+ //업데이트 이전의 마우스 스크롤 값을 스냅샷 하고 있다.
+ getSnapshotBeforeUpdate(prevProps, prevState){
+     if(prevState.list.length === this.state.list.length) return null;
+     const list = document.querySelector('#list');
+     return list.scrollHeight -list.scrollTop;
+ }
+ //업데이트 이후의 스크롤 값을 업데이트 이전값(snapshot)과 비교하여
+ //scrollTop을 설정해주고 있다.
+ componentDidUpdate(prevProps,prevState , snapshot){
+     if(snapshot === null) return;
+     const list = document.querySelector('#list');
+     list.scrollTop = list.scrollHeight - snapshot;
+ }
 
-    /*
-        3.componentDidCatch 추가
+ /*
+     3.componentDidCatch 추가
 
-        - componentDidCatch를 이용하면 componentDidCatch가 일어난
-          하위 컴포넌트에서 에러가 발생했을 때 부모 컴포넌트에서 error를 처리할 수 있다.
+     - componentDidCatch를 이용하면 componentDidCatch가 일어난
+       하위 컴포넌트에서 에러가 발생했을 때 부모 컴포넌트에서 error를 처리할 수 있다.
 
-    */
-    
-    // componentDidCatch 예시
-    //App 컴포넌트의 하위 컴포넌트인 WebService에 에러가 발생하면
-    //componentDidCatch가 호출된다.
-    //this.state의 hasError는 true가 되고
-    //render()에서 if 문 안으로 들어가게 된다.
-    
-    //상위 컴포넌트에서 하위 컴포넌트의 에러가 관리되는 범위를 Error Bounderies라고 하고 
-    //Error Bounderies는 최상위 컴포넌트에 위치하는 것이 좋다.
-   class App extends React.Component{
-    state = {
-        hasError: false
-    };
+ */
 
-    render(){
-        if(this.state.hasError){
-            return <div>예상치 못한 에러 발생</div>
-        }
-        return <WebService/>;
-    }
-    /
-    componentDidCatch(error, info){
-        this.setState({hasError : true})
-    }
+ // componentDidCatch 예시
+ //App 컴포넌트의 하위 컴포넌트인 WebService에 에러가 발생하면
+ //componentDidCatch가 호출된다.
+ //this.state의 hasError는 true가 되고
+ //render()에서 if 문 안으로 들어가게 된다.
+
+ //상위 컴포넌트에서 하위 컴포넌트의 에러가 관리되는 범위를 Error Bounderies라고 하고
+ //Error Bounderies는 최상위 컴포넌트에 위치하는 것이 좋다.
+class App extends React.Component{
+ state = {
+     hasError: false
+ };
+
+ render(){
+     if(this.state.hasError){
+         return <div>예상치 못한 에러 발생</div>
+     }
+     return <WebService/>;
+ }
+ /
+ componentDidCatch(error, info){
+     this.setState({hasError : true})
+ }
 }
-   ``` 
+```
 
 #
+
 ### Create React App
+
 #
 
 > React , ReactDOM을 편하게 사용할 수 있도록 프로젝트를 생성하고 , 개발에 필요한 여러가지 기능을 제공하는 역할을 한다.
@@ -681,17 +684,18 @@ ReactDOM.render(<Comp name = 'UGO'/>, document.querySelector('#root'))
 <br/>
 
 npx
+
 > npm 5.2.0 이상부터 함께 설치되는 커맨드라인 명령어로 라이브러리를 현재 최신버전으로 확인하여 받아주고 , 실행해주는 역할을 한다.
 
 <br/>
 
 ```js
-//리액트 앱 생성 명령어 
+//리액트 앱 생성 명령어
 //node js 기반의 react project가 생성된다.
 npx create-react-app ugo-app
 
 /*
-    create-react-app 으로 프로젝트 생성시 
+    create-react-app 으로 프로젝트 생성시
     기본적으로 추가되는 dependency
 */
 
@@ -699,21 +703,21 @@ npx create-react-app ugo-app
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
-    
+
     //react 핵심 모듈
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     /*
         - react-scripts
 
-        개발환경으로 띄우거나 배포를 위한 빌드작업등 
-        프로젝트 react-create-app에서 
+        개발환경으로 띄우거나 배포를 위한 빌드작업등
+        프로젝트 react-create-app에서
         프로젝트 관리역할을 하는 라이브러리
-        react-scripts의 버전은 
+        react-scripts의 버전은
         react-create-app의 버전과 같다,
     */
     "react-scripts": "4.0.3",
-    //google에서 사이트 경험을 측정하고 개선할 수 있도록 
+    //google에서 사이트 경험을 측정하고 개선할 수 있도록
     //정보를 얻어내는 역할을 하는 라이브러리
     "web-vitals": "^1.1.2"
 }
@@ -730,8 +734,8 @@ npx create-react-app ugo-app
         - 프로젝트를 build 한다.
         - build 라는 폴더가 생성되며 프로덕션용 파일이 저장된다.
         - 아래 명령어로 build 폴더를 파일서버에 띄워 프로덕션 모드로 확인할 수 있다.
-        - npx serve -s build  
-        (-s 는 어떤 요청에도 index.html을 응답하도록 하는 설정이며 
+        - npx serve -s build
+        (-s 는 어떤 요청에도 index.html을 응답하도록 하는 설정이며
         SPA를 의미한다)
     */
     "build": "react-scripts build",
@@ -750,21 +754,111 @@ npx create-react-app ugo-app
 
 }
 ```
-   
 
+<br/>
 
+#
 
-    
-    
+### Create React App dependencies
 
+#
 
+### 1.ESLint
 
+<br/>
 
+lint란?
 
+> 린트(lint) 또는 린터(linter)는 소스 코드를 분석하여 프로그램 오류, 버그, 스타일 오류, 의심스러운 구조체에 표시(flag)를 달아놓기 위한 도구들을 가리킨다.[1] 이 용어는 C 언어 소스 코드를 검사하는 유닉스 유틸리티에서 기원한다.  
+> 참조 : https://ko.wikipedia.org/wiki/%EB%A6%B0%ED%8A%B8_(%EC%86%8C%ED%94%84%ED%8A%B8%EC%9B%A8%EC%96%B4)
 
+> ESLint는 리액트 뿐만 아니라 자바스크립트로 쓰여진 모든 파일에서 코드상 오류 체크 해주는 유틸리티이다. 설정파일을 통해 어떤 오류를 잡아낼 것인지를 커스텀하게 설정할 수 있다.  
+>  Create-React-App에서는 package.json 파일에 "eslintConfig"에 eslint를 설정한다.
 
+<br/>
 
+Create-react-app package.json ESLint 설정
 
+```json
+"eslintConfig": {
+    //기본적으로 react-app의 eslint config를 상속받고있다.
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ],
+    //추가적인 설정은 rules에 설정해준다
+    "rules": [
+        "semi" : "error"
+    ]
+}
+```
 
-  
-    
+<br/>
+
+### 2.Prettier
+
+<br/>
+
+> 코드를 포멧팅하는 code fomatter이다. ide에서 plugin을 설치하고 기본 fomatter를 Prettier로 설정한 후에 저장시 코드변경을 체크해주면 저장할 때 설정한대로 코드가 포멧팅된다.  
+> ESLint와 충돌날 수 있는 기능이 있기 떄문에 겹치는 기능을 끄거나 ESLint에서 Prettier를 상속받으면 충돌 날수 있는 기능을 자동으로 꺼준다.
+
+<br/>
+
+아래의 링크에서 Prettier의 자세한 설정 옵션들을 확인할 수 있다.
+https://prettier.io/docs/en/options.html
+
+ <br/>
+
+### 3.Husky
+
+<br/>
+
+> Git Hook을 쉽게 처리할 수 있도록 해주는 라이브러리이다 . git을 통한 특정 동작시(push 전후 , commit 전후 등등..)에 원하는 동작을 실행시킬 수 있다록 해준다. 프로젝트에 git이 설치된 후에 husky를 셋팅해야한다.
+
+```js
+//husky를 통해 git hook을 인스톨하는 명령어
+ npx husky install
+
+//commit 이전에 "npm test" 스크립트를 실행시키는 훅을 add 한다.
+//husky로 설정한 동작에 에러가 있을시 git의 동작도 취소된다.
+//안전하게 커밋할 수 있다
+npx husky add .husky/pre-commit "npm test"
+```
+
+<br/>
+
+### 4.lint-staged
+
+<br/>
+
+> git에서 stage에 올라간 파일들을 lint 해주는 패키지이다.
+
+```js
+husky - lint-staged 연동
+
+1.프로젝트에 git init 해준다.
+2.prettier,husky 패키지 인스톨한다.
+3.npx husky install로 git hook을 활성화 시킨다.
+4.프로젝트 package.json에 "husky install "scipt를 추가해준다
+(다른 환경에서 프로젝트 실행시에 스크립트로 husky를 준비할 수 있다.)
+5.npx husky add 로 git hook 추가
+(예시 )npx husky add .husky/pre-commit "npx lint-staged")
+6.packge.json lint-staged 설정추가 
+ex)
+"lint-staged": {
+  //stage에 올라간 js 확장자 파일을 배열안 순서대로 명령한다.
+    "**/*.js": [
+      //코드오류를 찾아내고
+      "eslint --fix",
+      //코드를 포메팅한다
+      "prettier --write",
+      //변경사항을 add 한다.
+      "git add"
+    ]
+},
+
+동작) git commit전에 eslint로 코드오류를 검사받고 , 
+잘못된 부분이 prettier로 포메팅되고
+다시 git add 된후에 commit 된다 . 
+팀내에서 일관된 코드 스타일로 코드 작성이 가능해 진다.
+```
