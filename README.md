@@ -14,12 +14,16 @@
 - [Props 와 State](#Props와-State)
 - [Event Handling](#Event-Handling)
 - [Component LifeCycle](#Component-LifeCycle)
-
+- [React Developer tools](#React-Developer-tools)
 ### 리액트 프로젝트 생성
 
 - [Create React App](#Create-React-App)
 - [의존 라이브러리들](#Create-React-App-dependencies)
+- [Create React App 시작 코드 이해하기](#Create-React-App-시작-코드-이해하기) (나중에 추가)
+- [React Developer tools](#React-Developer-tools)(나중에 추가)
 
+### 리액트 라우터
+- [리액트 라우터 이해하기](#리액트-라우터-이해하기)
 #
 
 <br/>
@@ -799,7 +803,7 @@ Create-react-app package.json ESLint 설정
 
 <br/>
 
-> 코드를 포멧팅하는 code fomatter이다. ide에서 plugin을 설치하고 기본 fomatter를 Prettier로 설정한 후에 저장시 코드변경을 체크해주면 저장할 때 설정한대로 코드가 포멧팅된다.  
+> 코드를 포멧팅하는 code fomatter이다. ide에서 plugin을 설치하고 기본 fomatter를 Prettier로 설정한 후에 저장시 코드변경을 체크해주면 저장할 때 설정한대로 코드가 포멧팅된다. ide에서 뿐만 아니라  ESLint, husky , lint-staged 같은 라이브러리와 연동해서 git 특정 동작시에 오류를 잡아내고 수정하도록 설정할 수도 있다.
 > ESLint와 충돌날 수 있는 기능이 있기 떄문에 겹치는 기능을 끄거나 ESLint에서 Prettier를 상속받으면 충돌 날수 있는 기능을 자동으로 꺼준다.
 
 <br/>
@@ -860,5 +864,27 @@ ex)
 동작) git commit전에 eslint로 코드오류를 검사받고 , 
 잘못된 부분이 prettier로 포메팅되고
 다시 git add 된후에 commit 된다 . 
-팀내에서 일관된 코드 스타일로 코드 작성이 가능해 진다.
+* 팀내에서 일관된 코드 스타일로 코드 작성이 가능해 진다.
 ```
+
+#
+### Create React App 시작 코드 이해하기
+#
+
+> (나중에 추가)
+
+
+#
+### React Developer tools
+#
+
+> 개발 모드로 리액트를 띄우고 브라우저에서 extendtion으로 Devtools를 설치하면 Devtools가 React component를 디버깅하는 기능을 제공해준다.
+
+> (나중에 추가)
+ 
+
+#
+### 리액트 라우터 이해하기
+#
+
+
