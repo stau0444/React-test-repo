@@ -15,6 +15,7 @@
 - [Event Handling](#Event-Handling)
 - [Component LifeCycle](#Component-LifeCycle)
 - [React Developer tools](#React-Developer-tools)
+
 ### 리액트 프로젝트 생성
 
 - [Create React App](#Create-React-App)
@@ -28,6 +29,12 @@
 - [Switch와 "Not Found" 처리](#Switch와-"404-Not-Found"-처리)
 - [JSX 링크 라우팅 이동](#JSX-링크-라우팅-이동)
 - [JS 에서 라우팅 이동](#JS-에서-라우팅-이동)
+
+### 컴포넌트 스타일링
+- [Style Loaders](#Style-Loaders)
+- [](#)
+- [](#)
+
 #
 
 <br/>
@@ -1190,7 +1197,92 @@ export default function LoginButton(props) {
 ```
 <br/>
 
-> 위의 
+> 위의 코드는 Login 에서 LoginButton이 바로 아래 컴포넌트이기 때문에 가능하지만 여러 뎁스 아래의 컴포넌트라면 위와 같이 전달하기 힘들 것이다 . 이를 해결하기 위해 react-router-dom에서는
+HOC(High Order Component)라는 것을 제공한다.    
+*일단은 간단히만 살펴보자
 
+
+<br/>
+
+```jsx
+import {withRouter} from 'react-router-dom'
+// 하위 컴포넌트에서 라우터가 연결된 최상위 컴포넌트의 
+// props(history,location,match..)를 사용하고 싶다면
+// 아래와 같이 정의한 컴포넌트를 withRouter()안으로 넣어서
+// export default 해주면 된다.
+export default withRouter(function LoginButton(props) {
+    console.log(props);
+    function login() {
+        setTimeout(()=>{
+            props.history.push('/');
+            alert("로그인성공");
+        },1000);
+    }
+    return(
+        <button onClick={login}>
+          로그인
+        </button>
+      );
+});
+
+
+```
+<br/>
+
+### `<Redirect>`
+<br/>
+
+>react-router-dom 에서 제공하는 리다일렉트 처리를 할때 사용하는 컴포넌트이다  
+
+```jsx
+
+import {BrowserRouter , Redirect, Route ,Switch } from 'react-router-dom';
+import './App.css';
+import Home from './pages/Home';
+import Login from './pages/Login';
+
+const isLogin = false ;
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Links/>
+      <NavLinks/>
+      <Switch>
+        {/*Route의 reder에 정의한 jsx가 렌더된다*/}
+        <Route 
+          path="/login"  
+          render={()=>(isLogin ? <Redirect to='/'/> : <Login />)}
+          />
+      </Switch>
+    </BrowserRouter>
+    
+  );
+}
+
+export default App;
+```
+
+#
+## 컴포넌트 스타일링
+#
+
+
+
+#
+### Style Loaders
+#
+
+#### 리액트의 작동 방식
+
+<br/>
+
+![react 작동 방식](./image/react.png)
+
+> webpack은 각 확장자에 맞는 loader에게 comile을 위임한다. 각 확장자의 loader들은 각자의 config 파일을 통해 컴파일 작동 방식에 대해 설정할 수 있다. 
+
+<br/>
+
+#### 리액트의 작동 방식
 
 
