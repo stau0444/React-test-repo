@@ -883,8 +883,59 @@ ex)
 > (나중에 추가)
  
 
+
+#
+## React Router
+#
+
 #
 ### 리액트 라우터 이해하기
 #
+
+SPA 라우팅 과정(Single Page Application)
+
+```js
+1. 브라우저에서 최초에 '/' 경로로 요청하면
+2. React Web App을 내려준다.
+3.내려받은 React App에서 '/' 경로에 맞는 컴포넌트를 보여준다.
+5.Reat App에서 다른 페이지로 이동하는 동작을 수행하면 
+6.새로운 경로에 맞는 컴포넌트를 보여준다.
+
+//react-router-dom은 facebook의 공식 패키지가 아니지만 가장 대표적이고 많이 사용된다..
+//npm 리액트 라우터 설치 명령어
+npm i react-router-dom
+```
+
+
+React router dom 사용
+
+```js
+
+import {BrowserRouter , Route} from 'react-router-dom';
+import './App.css';
+import Home from './pages/Home';
+import Profile from './pages/Profile';
+import About from './pages/About';
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Route path="/" exact component ={Home}/>
+      <Route path="/profile" component ={Profile}/>
+      <Route path="/about" component ={About}/>
+    </BrowserRouter>
+  );
+}
+
+export default App;
+//react-router-dom에서는 BrowserRouter , Router과 같이 router 기능 사용에 필요한 여러가 컴포넌트를 제공한다
+//BrowserRouter 로 Route들을 감싸 줘야한다.
+//Route 컴포넌트에 경로 (path)와 컴포넌트(component)를 설정하여 나열해준다.
+//브라우저에서 요청한 경로에 Route의 path가 들어있으면 해당 component를 보여준다.
+//리액트 라우터 돔의 매칭 알고리즘 상 '/'는 다른 경로에 포함이 되어도 개별적인 경로로 해석되기 떄문에 
+//exact 프로퍼티를 설정하여 완전한 매칭에만 컴포넌트를 보여줄 수도 있다.
+
+```
+
 
 
