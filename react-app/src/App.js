@@ -1,5 +1,5 @@
 
-import {BrowserRouter , Route ,Switch } from 'react-router-dom';
+import {BrowserRouter , Redirect, Route ,Switch } from 'react-router-dom';
 import './App.css';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
@@ -9,13 +9,19 @@ import Links from './components/Links';
 import NavLinks from './components/NavLinks';
 import Login from './pages/Login';
 
+const isLogin = false ;
+
 function App() {
   return (
     <BrowserRouter>
       <Links/>
       <NavLinks/>
       <Switch>
-        <Route path="/login"  exact component ={Login}/>
+        {/*Route의 reder에 정의한 jsx가 렌더된다*/}
+        <Route 
+          path="/login"  
+          render={()=>(isLogin ? <Redirect to='/'/> : <Login />)}
+          />
         <Route path="/profile/:id"  component ={Profile}/>
         <Route path="/profile"  component ={Profile}/>
         <Route path="/about" component ={About}/>
