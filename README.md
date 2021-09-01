@@ -24,6 +24,10 @@
 
 ### 리액트 라우터
 - [리액트 라우터 이해하기](#리액트-라우터-이해하기)
+- [Dynamic routing](#Dynamic-routing)
+- [Switch와 "Not Found" 처리](#Switch와-"404-Not-Found"-처리)
+- [JSX 링크 라우팅 이동](#JSX-링크-라우팅-이동)
+- [JS 에서 라우팅 이동](#JS-에서-라우팅-이동)
 #
 
 <br/>
@@ -936,6 +940,257 @@ export default App;
 //exact 프로퍼티를 설정하여 완전한 매칭에만 컴포넌트를 보여줄 수도 있다.
 
 ```
+
+#
+### Dynamic routing
+#
+
+> 브라우저에서 값을 받아와서  동적으로 컴포넌트를 처리할 수 있게 한다.
+
+```js
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Route path="/" exact component ={Home}/>
+      <Route path="/profile" exact component ={Profile}/>
+      <Route path="/profile/:id"  component ={Profile}/>
+      <Route path="/about" component ={About}/>
+    </BrowserRouter>
+  );
+}
+
+// 1.pathvariable 사용
+
+// 경로에 '/: '로 pathvariable를 사용할 수 있다.
+// Route를 통해 연결된 component는 아래와 같은 형태의 props를 전달받는다.
+
+{
+  history: {…}, 
+  location: {…}, 
+  match: {…}, 
+  staticContext: undefined
+}
+
+//컴포넌트에서는 해당 props를 활용해 동적으로 컴포넌트를 표현할 수 있다.
+
+export default function Profile(props){
+    const id = props.match.params.id;
+    return(
+            <div> 
+                <h2> profile page 입니다</h2>
+                {id &&<p>id 는 {id} 입니다</p>}
+            </div>
+        );
+}
+
+// 2. queryString 사용
+
+import queryString from 'query-string'
+export default function About(props){
+    const params = props.location.search;
+    //URLSearchParams 사용
+    //쿼리스트링을 분석하는 여러가지 기능을 제공
+    //브라우저에 따라 작동하지 않을 수 있다.(ie에서 작동 안됨)
+    const obj = new URLSearchParams(queryString);
+    console.log(obj.get('name'));
+
+
+    //query-string 사용 
+    //객체 형식으로 쿼리스트링을 변환해준다.
+    const query = queryString.parse(params)
+    console.log(query);
+    return <div>about page 입니다.</div>;
+}
+
+```
+
+#
+### Switch와 "404 Not Found" 처리
+#
+<br/>
+
+### `<Switch>`
+<br/>
+>1.Switch 문 처럼 여러 Route 중 순서대로 먼저 맞는 하나만 보여준다.   
+2.exact 를 뺄 수 있는 로직을 만들 수 있다 .   
+3.가장 마지막에 어느 path 와도 맞지 않으면 보여지는 컴포넌트를 설정해서 not found 페이지를 만들 수 있다.
+
+<br/>
+
+```js
+
+function App() {
+  return (
+    <BrowserRouter>
+    // Switch 컴포넌트를 사용하면 위에서 아래로 매칭되는 경로를 찾는다.
+      <Switch>
+        <Route path="/profile/:id"  component ={Profile}/>
+        <Route path="/profile"  component ={Profile}/>
+        <Route path="/about" component ={About}/>
+        <Route path="/"  exact component ={Home}/>
+        //가장 큰 범위 경로인 / 에도 match 되지 않는다면 NotFound 페이지로 매칭된다
+        <Route component={NotFound}/>
+      </Switch>
+    </BrowserRouter>
+  );
+}
+```
+
+#
+### JSX 링크 라우팅 이동
+#
+
+### `<Link>`
+<br/>
+
+> 링크 이동할 때에 a 태그 대신 리액트 라우터 돔의 컴포넌트인 Link를 사용하여 페이지에 새로운 요청을 하는 것이 아닌 , 라우터상의 경로를 통해 경로가 이동된다. 
+
+<br/>
+
+```js
+function App() {
+  return (
+    <BrowserRouter>
+      <Link to="/">Home</Link> 
+      <Switch>
+        <Route path="/profile/:id"  component ={Profile}/>
+        <Route path="/profile"  component ={Profile}/>
+        <Route path="/about" component ={About}/>
+        <Route path="/"  exact component ={Home}/>
+        <Route component={NotFound}/>
+      </Switch>
+    </BrowserRouter>
+    
+  );
+}
+```
+<br/>
+
+### `<NavLink>`
+<br/>
+
+> activeClassName ,activeStyle 처럼  active 상태에 대한 스타일 지정이 가능하다.   
+  Route의 path 처럼 동작하기 때문에 exact가 제공된다.   
+  to 라는 props 와 현재 브라우저의 경로가 일치하는 상태에 대한 처리를 해준다.
+
+<br/>
+
+NavLink 예시
+
+```ts
+import { NavLink } from "react-router-dom";
+const activeStyle = {backgroundColor:'tomato'};
+export default function NavLinks(){
+    return (
+      <ul>
+        <li>
+        // activeStyle에 css 객체를 넣어 active시 스타일을 지정할 수 있다
+        // exact를 사용할 수 있다.
+          <NavLink to="/" exact activeStyle={activeStyle}>
+            HOME
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/profile" exact activeStyle={activeStyle}>
+            PROFILE
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/profile/1" activeStyle={activeStyle}>
+            PROFILE/1
+          </NavLink>
+        </li>
+        <li>
+        //isActive 라는 props에 함수를 정의하여
+        //어떤 경우 active 상태를 줄지를 함수를 통해 지정할 수 있다.
+        //첫번째 인자로는 match(to와 현재경로가 일치하는지)
+        //두번째 인자로는 location(경로정보)
+        //match가 맞지 않는다면 다른 경로에도 영향을 주기 때문에 
+        //match와 location을 조합하여 코드를 작성해야한다
+          <NavLink
+            to="/about"
+            activeStyle={activeStyle}
+            isActive={(match, location) => {
+              console.log("3", l);
+              return match !== null && location.search === "";
+            }}
+          >
+            ABOUT
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to="/about?name=ugo"
+            activeStyle={activeStyle}
+            isActive={(m, l) => {
+              console.log("3", l);
+              return m !== null && l.search === "?name=ugo";
+            }}
+          >
+            ABOUT?name=UGO
+          </NavLink>
+        </li>
+      </ul>
+    );
+};
+
+```
+
+<br/>
+
+#
+### JS 에서 라우팅 이동
+#
+>  button을 누른다던가 특정 이벤트가 작동하여 자바스크립트가 동작할때 라우팅 을 이동 시키고 싶다면 , 아래와 같은 방법으로 해결할 수 있다.
+
+```jsx
+//js routing 예시
+
+//로그인을 하는 상황이라고 가정하고 route 컴포넌트를 추가했다 
+<Route path="/login"  exact component ={Login}/>
+
+// ' /login ' 요청에 대하여 아래의 <Login> 컴포넌트가 불려올 것이다.
+import LoginButton from '../components/LoginButton';
+
+export default function Login(props) {    
+    return(
+        <div>
+            <h2>Login Page</h2>
+            {/*
+              <Login>는 페이지로서 router와 직접 연결되어있기
+              떄문에 라우터에서 제공하는 history,location,match 등의 
+              기능 props로 전달받는다 하지만 <LoginButton>는 라우터와 
+              직접 연결된 컴포넌트가 아니기 때문에 부모(Login)의 props를
+               자식에게 전달 해줘야한다. 
+            */}
+            <LoginButton {...props}/>
+        </div>
+    );
+}
+```
+```js
+// <Login>은 <LoginButton>를 사용하고 있다
+// 로그인 버튼은 클릭시 로그인 로직을 수행하고 '/' 경로로 넘어가도록 되어있다.
+export default function LoginButton(props) {
+    console.log(props);
+    function login() {
+        setTimeout(()=>{
+            //로그인 로직 수행
+            alert("로그인성공");
+            // 부모의 props를 전달 받아 아래의 기능을 사용할 수 있다.
+            props.history.push('/');
+            
+        },1000);
+    }
+    return(
+        <button onClick={login}>로그인</button>
+    );
+});
+```
+<br/>
+
+> 위의 
 
 
 
