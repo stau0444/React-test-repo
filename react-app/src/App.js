@@ -1,5 +1,6 @@
 
 import {BrowserRouter , Redirect, Route ,Switch } from 'react-router-dom';
+import './test.css';
 import './App.css';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
@@ -14,6 +15,7 @@ const isLogin = false ;
 function App() {
   return (
     <BrowserRouter>
+      <h2 className = 'test'>test</h2>
       <Links/>
       <NavLinks/>
       <Switch>

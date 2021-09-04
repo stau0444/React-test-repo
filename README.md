@@ -32,7 +32,7 @@
 
 ### 컴포넌트 스타일링
 - [Style Loaders](#Style-Loaders)
-- [](#)
+- [Styled Components(스타일 라이브러리)](#Styled-Components(스타일-라이브러리))
 - [](#)
 
 #
@@ -849,7 +849,7 @@ npx husky add .husky/pre-commit "npm test"
 > git에서 stage에 올라간 파일들을 lint 해주는 패키지이다.
 
 ```js
-husky - lint-staged 연동
+husky - lint staged 연동
 
 1.프로젝트에 git init 해준다.
 2.prettier,husky 패키지 인스톨한다.
@@ -1265,7 +1265,7 @@ export default App;
 
 #
 ## 컴포넌트 스타일링
-#
+
 
 
 
@@ -1283,6 +1283,365 @@ export default App;
 
 <br/>
 
-#### 리액트의 작동 방식
+#### webpack.config에서 Style Loaders 지정
+
+<br/>
+
+> webpack.config 파일에서 .css를 검사해보면 아래와같은 내용을 볼 수 있다.
+
+```js
+// import시에 .css 확장자를 갖는 파일에 대해서
+// use에 해당하는 로더를 사용하겠는 내용이다.
+// 즉 js파일에서 import './App.css';<-과 같은  파일은 아래의 loader를 타게된다
+
+//스타일에 관련된 module.css , scss ,sass ,module.scss ,module.css  같은 파일도 아래와 같이 각각
+//loader를 타게된다.
+
+{
+  test: cssRegex, // /\.css$/; <- 정규표현식(css확장자)
+  exclude: cssModuleRegex,
+  use: getStyleLoaders({
+    importLoaders: 1,
+    sourceMap: isEnvProduction
+      ? shouldUseSourceMap
+      : isEnvDevelopment,
+  }),
+  // Don't consider CSS imports dead code even if the
+  // containing package claims to have no side effects.
+  // Remove this when webpack adds a warning or an error for this.
+  // See https://github.com/webpack/webpack/issues/6571
+  sideEffects: true,
+},
+```
+
+<br/>
+
+#### 리액트에서 css
+
+<br/>
+
+> 리액트 앱에서는 css 파일이 컴포넌트별로 css가 따로 관리되지 않고 
+ 전역 파일로 index.html에 전역파일로 관리된다. 브라우저 콘솔에서 head 부분을 열어보면 style들이 추가되는 것을 확인할 수 있다. 이 방식은 css의 scope가 오염될 수 있는 단점이 있기 때문에 태그 class 에 namespace를 정하고 컴포넌트를 구분하여 사용하는 것이 좋다. 
+
+<br/>
+
+ #### CSS Module(module.css) , SASS Module(module.sass)
+
+<br/>
+
+```js
+/*
+css의 scope가 오염될 수 있는 단점을 보완하기 위한 기능들이 추가되어 있는 파일형식이다
+
+module.css 파일에는  {"선택자이름":"모듈명_선택자이름_hash값"} 키벨류 형식으로 모듈안의 모든 선택자가 저장되고 컴파일시에는 value값이 실제 css 파일에서 선택자 명으로 사용되기 떄문에  선택자의 이름이 겹치지 않게 된다.
+
+해당 module.css를 import 하는 곳에서는 변수를 'styles'라는 이름으로 받아서 사용할 수 있으며 styles["선택자명"]으로 원하는 선택자를 꺼내어 사용할 수 있다.   
+
+이를 활용하여 3항 연산자를 통해 특정 상태값의 true false 값을 class를 추가 제거 하여 효과를 줄 수 있다.
+  
+classNames 라는 라이브러리를 사용하면 해당 기능을 더 쉽게 구현할 수 있는데 classNames 는 classNames()라는 함수를 제공하며 첫번째 인자와 두번째 인자 사이에 빈문자열을 한칸 추가해줘 className을 구분할 수 있는 형태로 만들어 준다.
+
+만약 classNames()의 파라미터에 falsy한 값이 들어간다면 해당 값은 출력되지 않는다. 인자를 객체형태로 전달하면 벨류값이 true 일 경우 키값의 이름을 출력해준다. classNames()를 module.css 파일과 함께 사용하기 위해서는 
+
+import classNames from 'classnames/bind'
+
+위와 같은 형태로 classNames를 import 하면 classNames.bind() 함수를 사용할 수 있는데 classNames.bind()는 파라미터로 module안의 선택자명을 전달하면 해당하는 해당 선택자에 매칭되는 벨류값을 바인드해준다.
+
+*/
+
+
+//classNames 사용 예시
+
+//'ugo bar' 출력
+console.log(classNames('ugo','bar'))
+//'ugo bar bars' 출력
+console.log(classNames('ugo','bar','bars'))
+//'ugo' 출력
+console.log(classNames({ugo:true},{bar:false}))
+//'bar 0 1' 출력
+//falsy한 값은 출력되지 않는다.
+console.log(classNames(null,false,'bar',undefined,0,1,{asd:null},""));
+//styles["button"],styles["loading"]에 해당하는 value가  출력된다.
+console.log(classNames(styles["button"],styles["loading"]))
+
+
+//module.css와 classNames 함께 사용 
+
+import React from "react";
+//style에는 해당 module.css 안에 모든 
+//선택자가 {"선택자1":"변환된값","선택자2":"변환된값" ....} 형태로 들어온다.
+import styles from './Button.module.css'
+//module.css와 함께 사용하기 위해서는 'classnames/bind'로 import한다.
+import classNames from 'classnames/bind'
+
+//classNames.bind를 사용하면 module.css에서 변환된 값이 바인드된다. 
+const cx = classNames.bind(styles);
+//cx에는 함수가 담긴다
+console.log('cx=',cx)
+//cx함수에 파라미터로 선택자 이름을 전달하면
+//매칭되는 키값(변환값)이 리턴된다.
+//출력값 -> 'Button_button__2Ce79 Button_loading__XEngF'
+console.log(cx('button','loading'))
+
+class Button extends React.Component{
+
+    //loading 이라는 상태값을 갖는다.
+    state = {
+        loading: false
+    };
+    
+    render(){
+        //this.state에서 loading을 꺼내온다.
+        const {loading} = this.state;
+        return (
+          <button
+            //버튼 클릭시에 startLoading함수가 호출된다.
+            onClick={this.startLoading}
+            //loading이라는 값이 true 일때 파라미터로 'loading'이 들어간다.
+            //파라미터로 들어가는 선택자명에 매칭되는 value가 출력된다
+            //출력값->'Button_button__2Ce79 Button_loading__XEngF'
+            className={cx('button',{loading})}
+            {...this.props}
+          />
+        );
+    }
+
+    startLoading = () => {
+        this.setState({
+            loading:true
+        })
+        setTimeout(()=>{
+            this.setState({
+                loading:false
+            })
+        },1000)
+    }
+}
+
+export default Button;
+```
+
+#
+### Styled Components(스타일 라이브러리)
+#
+
+> 별도의 css나 css모듈을 사용하지 않고 styling 라이브러리를 통해 stlye을 입히는 방식
+라이브러리로는 대표적으로 styled Components , emotion 이 있다. 
+
+```js
+//styled components 라이브러리 인스톨 명령어
+npm install styled-components
+
+
+//Styled Component 생성
+//styled안에는 모든 HTML 태그가 정의되어 있다.
+// `` 안에서 해당 태그에 대한 css를 작성할 수 있다(js 기본지원 문법)
+import styled from 'styled-components';
+
+const StyledButton = styled.button`
+    background:transparent;
+    border-radius : 3px;
+    border :2px solid palevioletred;
+    color : palevioletred;
+    margin : 0.1em;
+    padding 0.25em 1em;
+    font-size : 20px;
+`;
+
+export default StyledButton;
+
+
+```
+<br/>
+>위와 같이 작성된 컴포넌트는 App.js에서  사용될 수 있다. 
+Styled Components의 장점은 className 등을 자동으로 겹치지 않게 선언해주기 떄문에 css가 오염되는 문제를 피할 수 있게 해준다
+스타일을 정의하는 ``은 문자열로 해석되기 때문에 IDE에서 문법 오류를 잡아낼 수 없다 . 
+이럴 경우 IDE plug-in을 사용하면 css 처럼 사용할 수 있게 해준다.
+
+
+```jsx
+
+//styled component 예시
+
+import logo from './logo.svg';
+import './App.css';
+import StyledButton from './components/StyledButton';
+import StyledTitle from './components/StyledTitle';
+import styled, { createGlobalStyle } from 'styled-components';
+import StyledA from './components/StyledA';
+
+
+//이미 있는 컴포넌트의 스타일을 상속받아  다른 컴포넌트에서 재사용
+const PrimaryStyledButton = styled(StyledButton)`
+    border-radius : 10px;
+    border: 1px solid green;
+    margin: 4px 20px;
+    
+    :hover {
+      background-color: gray;
+    }
+
+    ::before{
+      content: "@";
+    }
+`;
+
+//테스트용 컴포넌트
+const UppercaseButton = (props) => (<button {...props} children ={`MyButton ${props.children}`} />);
+//테스트용 컴포넌트
+const MyButton = props =>(
+  <button {...props} children ={`MyButton ${props.children}`} />
+)
+
+//이미 만들어진 컴포넌트에 스타일을 적용시킬 수 있다.
+const StyledMyButton = styled(MyButton)`
+  background:tomato;
+`;
+//createGlobalStyle은 global css 속성을 지정해 준다.
+//GlobalStyle도 컴포넌트임으로 다른 컴포넌트들과 마찬가지로 render 해줘야한다. 
+const GlobalStyle = createGlobalStyle`
+  button{
+    color : yellow;
+  }
+`;
+
+function App() {
+  return (
+    <div className="App">
+      <GlobalStyle/>
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <StyledTitle>Styled Title</StyledTitle>
+        <p>
+          <StyledButton> 버튼 </StyledButton>
+          {/* as를 통해 다른 태그를 지정할 수도 있다 */}
+          <StyledButton as="a"> 버튼 </StyledButton>
+          {/* as를 통해 다른 컴포넌트를 지정할 수도 있다 */}
+          <StyledButton as={UppercaseButton}> button </StyledButton>
+          <StyledMyButton>asd</StyledMyButton>
+
+
+          {/* primary라는 props를 넘기고 해당 컴포넌트에서 
+            primary가 넘어오는 경우 다른 css를 적용시킬 수 있다.*/}
+          <StyledButton primary> 버튼 </StyledButton>
+
+          {/*
+              //----StyledButton.jsx 파일
+
+                const StyledButton = styled.button`
+                  background:transparent;
+                //props에서 primary를 확인하여 있을경우 && 뒤의 css를 적용한다.
+                ${props => props.primary && css`
+                    background: coral;
+                    color: white;
+                `}
+            `;
+          */}
+
+          {/* 컴포넌트 선언시 styled.태그명.attr(props=>{props.속성명})으로 
+              원하는 속성을 미리 지정할 수 있다. */}
+          <StyledA href="https://google.com" > 태그 </StyledA>
+          {/*
+              //----StyledA.jsx 파일
+
+              import styled from "styled-components";
+
+              // attrs() 로 attribute를 받아 설정해 줄 수 있다.
+              const StyledA = styled.a.attrs(props => ({
+                  target: "_BLANK"
+              }))`
+                  color :${(props) => (props.color)}
+              `;
+
+              export default StyledA;
+          */}
+        </p>
+      </header>
+    </div>
+  );
+}
+
+export default App;
+
+```
+
+#
+### Ant Design
+#
+
+> 이미 디자인된 컴포넌트를 제공해주는 라이브러리이다.
+
+```js
+// ant-design 인스톨 명령어 
+npm i antd
+
+//ant-design icon 패키지 설치 명령 
+npm install --save @ant-design/icons
+
+//ant-design components 링크
+https://ant.design/components/button/
+
+//앱의 index.js에서 index.css 위에 import 해줘야한다.
+//모든 컴포넌트를 가져오는 것이 부담일 수 있기 때문에
+//아래와 같이 원하는 컴포넌트와 css만 가져올 수도 있다.
+//babel-plugin-import 라이브러리를 사용하면 
+//컴포넌트만 가져오면 css를 자동으로 가져오는 방식으로 동작시킬 수 있지만
+//react app을 eject해야한다는 단점이 있다.
+
+//라이브러리로부터 컴포넌트를 부분적으로 가져옴으로써
+//최종 앱의 번들 사이즈를 줄일 수 있다.
+
+//import 컴포넌트명 from 'antd/es/date-picker';
+//import 'antd/es/date-pciker/style/css';
+
+//index.js
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+//import "antd/dist/antd.css"
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+
+
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
+
+reportWebVitals();
+
+
+//app.js
+//antdesign 컴포넌트 사용
+
+import logo from './logo.svg';
+import './App.css';
+import {Calendar} from 'antd';
+import 'antd/lib/calendar/style/css'
+function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <Calendar onPanelChange={false} />
+      </header>
+    </div>
+  );
+}
+
+export default App;
+
+
+```
+
+
+
+
 
 
