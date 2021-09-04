@@ -1,0 +1,17 @@
+.WarnButton {
+    border: 2px solid red;
+    margin-top: 30px;
+    width: 50px;
+    border-radius: 3px;
+    color: red;
+    background-color:transparent;
+}
+.loading {
+    border: 2px solid gray;
+    margin-top: 30px;
+    width: 100px;
+    height: 100px;
+    border-radius: 3px;
+    color: gray;
+    background-color:coral;
+}
