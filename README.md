@@ -35,11 +35,15 @@
 - [Styled Components(스타일 라이브러리)](#Styled-Components(스타일-라이브러리))
 
 
-#
+
 
 ### 리액트 활용
 -[Higher Order Component](#Higher-Order-Component)   
 -[Controlled Component 와 UnControlled Component](#Controlled-Component-와-UnControlled-Component)
+
+### Hooks & Context
+- [basic hook](#basic-hook)
+
 <br/>
 
 > 프레임워크 별 비교
@@ -1693,3 +1697,101 @@ HOC는 <컴포넌트>를 인자로 받아 <새로운 컴포넌트>를 리턴하�
 엘리먼트의 '상태'를 누가 관리하느냐에 따라 controlled ,uncontrolled 컴포넌트로 구분된다.   
 controlled : 엘리먼트를 가지고 있는 컴포넌트가 관리   
 uncontrolled : 엘리먼트의 상태를 관리하지 않고 ,엘리먼트의 참조만 컴포넌트가 소유
+
+
+
+#
+## Hooks & Context 
+#
+
+
+## basic hook
+#
+
+<br/>
+
+### Hooks
+
+<br/>
+
+> 
+
+
+
+<br/>
+
+### useState를 활용한 state 선언
+
+<br/>
+
+https://rinae.dev/posts/a-complete-guide-to-useeffect-ko#tldr-too-long-didnt-read---%EC%9A%94%EC%95%BD ( Dan Abramov가 작성한 ‘A Complete Guide to useEffect’의 번역문)
+
+
+>useState()를 사용하는 이유
+
+    1.컴포넌트 사이에 상태와 관련된 로직을 재사용하기 어렵다.
+    2. 복잡한 컴포넌트들은 이해하기 어렵다.
+    3.Class는 컴파일 단계에서 코드를 최적화하기 어렵게 한다.
+    4.this.state 는 로직내에서 레퍼런스를 공유하기 때문에 문제가 발생할 수 있다.
+
+```jsx
+
+
+//function Component
+export default function HookExample2() {
+
+    //function Component에서는 useState()로 state를 설정할 수 있다
+    //useState()의 첫번째 인자로 초기값이 들어가고
+    //React.useState(); 은 배열을 리턴하는데 첫번째 원소는 상태값 , 
+    //두번째 원소는 상태값을 바꾸는 함수가 들어 있다.
+    const [count , setCount] = React.useState(0);
+
+    return(
+        <div>
+            <p>clicked {count} times</p>
+            <button onClick={click}>Click</button>
+        </div>
+    );
+
+    //click이 호출되면 state인 count가 변경되어 
+    //re render가 일어난다.
+    function click() {
+        setCount(count +1);
+    }
+}
+
+
+
+import React from 'react'
+
+//useState => {count:0}으로 지정하면  setState()를 사용할 수 있다.
+
+export default function HookExample3() {
+
+    const [state , setState] = React.useState({ count : 0 });
+
+    return(
+        <div>
+            <p>clicked {state.count} times</p>
+            <button onClick={click}>Click</button>
+        </div>
+    );
+
+    //click이 호출되면 state인 count가 변경되어 
+    //re render가 일어난다.
+    //아래의 방식은 setState에 함수를 전달하고 이전 state값을 함수에서 관리하기 때문에
+    //useState로 지정된 state 값에 의존적이지 않게된다.
+
+    function click() {
+        setState((state) => ({count :state.count +1}));
+    }
+}
+```
+
+
+<br/>
+
+### useEffect를 통한 라이프 사이클 훅 구현
+
+
+<br/>
