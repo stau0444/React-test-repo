@@ -31,12 +31,15 @@
 - [JS 에서 라우팅 이동](#JS-에서-라우팅-이동)
 
 ### 컴포넌트 스타일링
-- [Style Loaders](#Style-Loaders)
+- [Style Loaders](#Style-Loaders)   
 - [Styled Components(스타일 라이브러리)](#Styled-Components(스타일-라이브러리))
-- [](#)
+
 
 #
 
+### 리액트 활용
+-[Higher Order Component](#Higher-Order-Component)   
+-[Controlled Component 와 UnControlled Component](#Controlled-Component-와-UnControlled-Component)
 <br/>
 
 > 프레임워크 별 비교
@@ -1640,8 +1643,53 @@ export default App;
 
 ```
 
+#
+## 리액트 활용
+#
+
+
+#
+### Higher Order Component 
+#
+
+> 리액트에서 컴포넌트 안의 로직을 재활용하는 기술이며 , 리액트에 국한되어 있는 기술은  아니다 , 
+HOC는 <컴포넌트>를 인자로 받아 <새로운 컴포넌트>를 리턴하는 함수를 말한다 .
+ 
+ //Component
+ props -> 컴포넌트 -> UI
+ //HOC
+ 컴포넌트 -> HOC -> 새로운 컴포넌트
 
 
 
+#
+### HOC 사용법 , 주의접
+#
+
+```js
+
+//사용법
+- Cross-Cutting Concerns(횡단 관심사) 처리에 사용
+- HOC의 인자로 들어가는 컴포넌트를 변경하면 안된다.
+- HOC가 찾아내는 props와 사용자가 인자로 전달하는 props가 오염되면 안된다.
+- 쉬운 디버깅을 위해 HOC를 통해 새로 만들어진 Components에게는 HOC를 통해 
+  만들어졌다는 Display name을 부여해야한다.
 
 
+//주의점
+- HOC를 render method 안에서 사용하지 않는다.
+  * HOC는 새로운 컴포넌트를 만드는 용도인데 render안에 있다면 render 될때 마다 새로운 컴포넌트가 만들어진다.
+- static method
+
+- ref는 React.forwardRef를 통해 전달되어야 한다.
+```
+
+
+#
+### Controlled Component 와 UnControlled Component
+#
+
+>Html 태그중 input , select , textarea 등..과 같이 상태를 가지고 있는 엘리먼트가 있다
+엘리먼트의 '상태'를 누가 관리하느냐에 따라 controlled ,uncontrolled 컴포넌트로 구분된다.   
+controlled : 엘리먼트를 가지고 있는 컴포넌트가 관리   
+uncontrolled : 엘리먼트의 상태를 관리하지 않고 ,엘리먼트의 참조만 컴포넌트가 소유
