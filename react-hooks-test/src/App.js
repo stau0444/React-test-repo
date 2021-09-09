@@ -1,24 +1,24 @@
 import logo from './logo.svg';
 import './App.css';
-import HookExample from './components/HookExample';
-import HookExample2 from './components/HookExample2';
-import HookExample3 from './components/HookExample3';
-import HookExample4 from './components/HookExample4';
-import HookExample5 from './components/HookExample5';
+import useHasMounted from './hooks/useHasMounted';
+import Example6 from './components/Example6';
+import Example7 from './components/Example7';
+
 
 function App() {
+  
+  const hasMountedHook = useHasMounted();
+  console.log(hasMountedHook);
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        {/* <HookExample/>
-        <HookExample2/>
-        <HookExample3/>
-        <HookExample4/> */}
-        <HookExample5/>
+        <Example6/>
+        <Example7/>
       </header>
     </div>
   );
 }
 
 export default App;
+

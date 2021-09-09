@@ -1,5 +1,5 @@
 {
-  "name": "ugo-app",
+  "name": "react-context-test",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -9,13 +9,9 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
-    "sass": "^1.39.0",
-    "scss": "^0.2.4",
-    "styled-components": "^5.3.1",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "prepare": "husky install",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -24,20 +20,7 @@
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest",
-      "prettier"
-    ],
-    "rules": {
-      "semi": [
-        "error"
-      ]
-    }
-  },
-  "lint-staged": {
-    "**/*.js": [
-      "eslint --fix",
-      "prettier --write",
-      "git add"
+      "react-app/jest"
     ]
   },
   "browserslist": {
@@ -51,13 +34,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-react": "^7.25.1",
-    "husky": "^7.0.2",
-    "lint-staged": "^11.1.2",
-    "prettier": "^2.3.2"
   }
 }

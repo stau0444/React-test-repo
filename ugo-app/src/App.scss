@@ -1,0 +1,59 @@
+.App {
+  thead{
+    font-weight: bold;
+  }
+  text-align: center;
+    .member-list-container{
+      padding: 40px 40px;
+      border: 2px coral solid;
+      border-radius: 30px;
+      margin: 100px 100px;
+      .member-title{
+          font-weight:bolder;
+          font-family: 'Monoton', cursive;
+          color: royalblue;
+          font-size: 55px;
+    }
+    ul{
+      font-family:'Gowun Dodum', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .member-nameInput{
+      width: 200px;
+      height: 30px;
+      border: gray 1.5px solid;
+      border-radius: 7px;
+      text-align: center;
+      margin-right: 15px;
+    }
+    .member-nameButton{
+      color: darkslateblue;
+      font-weight: bold;
+      border: royalblue 2px solid;
+      width:60px;
+      height: 30px;
+      border-radius: 7px;
+      background-color: #fff;
+    }
+    .update-input{
+      margin-right: 5px;
+    }
+    .member-table{
+       margin-top: 30px;
+       width: 100%;
+       .member-row{
+        height: 30px;
+       }
+       .member-row button{
+        color: palevioletred;
+        font-weight: bold;
+        border: 2px tomato solid;
+        border-radius: 3px;
+        background-color: #fff;
+       }
+    }
+    
+
+  }
+}

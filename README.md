@@ -43,6 +43,7 @@
 
 ### Hooks & Context
 - [basic hook](#basic-hook)
+- [Custom hook](#Custom-hook)
 
 <br/>
 
@@ -1705,12 +1706,11 @@ uncontrolled : 엘리먼트의 상태를 관리하지 않고 ,엘리먼트의 �
 #
 
 
-## basic hook
-#
-
 <br/>
 
-### Hooks
+#
+### basic hook
+#
 
 <br/>
 
@@ -1720,19 +1720,26 @@ uncontrolled : 엘리먼트의 상태를 관리하지 않고 ,엘리먼트의 �
 
 <br/>
 
-### useState를 활용한 state 선언
+### useState와() useEffect()
 
 <br/>
 
-https://rinae.dev/posts/a-complete-guide-to-useeffect-ko#tldr-too-long-didnt-read---%EC%9A%94%EC%95%BD ( Dan Abramov가 작성한 ‘A Complete Guide to useEffect’의 번역문)
+https://rinae.dev/posts/a-complete-guide-to-useeffect-ko#tldr-too-long-didnt-read---%EC%9A%94%EC%95%BD    
+( Dan Abramov가 작성한 ‘A Complete Guide to useEffect’의 번역문)
 
 
->useState()를 사용하는 이유
+>useState() 장점
 
     1.컴포넌트 사이에 상태와 관련된 로직을 재사용하기 어렵다.
     2. 복잡한 컴포넌트들은 이해하기 어렵다.
     3.Class는 컴파일 단계에서 코드를 최적화하기 어렵게 한다.
     4.this.state 는 로직내에서 레퍼런스를 공유하기 때문에 문제가 발생할 수 있다.
+
+<br/>
+
+> useState()를 통한 state 관리
+
+<br/>
 
 ```jsx
 
@@ -1795,3 +1802,497 @@ export default function HookExample3() {
 
 
 <br/>
+
+```js
+import React from 'react';
+
+//React.useEffect()를 활용하여 라이프 사이클 hook 처럼 사용하기
+
+//useEffect는 의존 dependency의 상태에 따라 값이 바뀌기 때문에 
+//라이프 사이클 hook과 동일하다 할 수는 없다.
+//componentDidMount,componentDidUpdate,componentWillUnmount
+//세가지 라이프사이클 훅처럼 동작할 수 있다.
+export default function HookExample2() {
+
+    const [count , setCount] = React.useState(0);
+
+
+    //useEffect는 componentDidMount 시점과 componentDidUpdate시점에 모두 실행된다
+    //useEffect의 2번째 인수로는 useEffect를 시정할 수 있다.
+    //두번째 인수가 없으면 render(re-render포함)시에 항상 useEffect가 실행되며
+    //두번째 인수로 [](빈 배열)를 주면 최초에 render시(componentDidMount)에만 함수가 실행된다
+    //배열안에 디펜던시 (의존하는 상태값 )를 주고 
+    //해당 디펜던시에 상태가 변경되었을 시에 useEffect가 실행되도록 할 수 있다.
+    React.useEffect(()=>{
+        console.log('componentDidMount & componentDidUpdate by count',count)
+    },[count]);
+
+    //useEffect는 여러개를 사용할 수 있다.
+    React.useEffect(()=>{
+        console.log('componentDidMount & componentDidUpdate',count)
+    },[]);
+
+    //useEffect의 첫번째 인자인 함수는 return을 해줄 수 있는데
+    //해당 부분을 cleanUp이라 한다.
+    React.useEffect(()=>{
+        //이 부분은 render가 된 직후를 의미한다.
+        console.log('componentDidMount & componentDidUpdate',count)
+        //리턴되는 함수는 다시 render가 일어날 때 호출 되는데
+        //아래와 같이 useEffect의 두번재 인자가 빈배열 일 경우 
+        //최초에만 useEffect가 실행되고 다음으론 컴포넌트가 사라질 호출되기때문에 
+        //componentWillUnmount과 같은 시점에 해당 함수가 실행된다.
+        return()=>{
+            //cleanUp
+        };
+    },[]);
+
+    //useEffect는 여러개를 사용할 수 있다.
+    React.useEffect(()=>{
+        console.log('componentDidMount & componentDidUpdate',count)
+        return ()=>{
+            console.log('cleanup by count',count);
+        }
+    },[count]);
+
+    return(
+        <div>
+            <p>clicked {count} times</p>
+            <button onClick={click}>Click</button>
+        </div>
+    );
+
+    function click() {
+        setCount(count +1);
+    }
+}
+```
+
+
+#
+### Custom hook
+#
+
+>
+
+```js
+
+//hook은 hook 또는 함수 컴포넌트 안에서만 실행이 가능하다.
+//useWindowWidth는 window width의 변화를 관리하는 custom한 hook 이다.
+import React, { useEffect } from 'react';
+
+export default function useWindowWidth(){
+    const [width , setState] = React.useState(window.innerWidth); 
+
+    useEffect(()=>{
+
+        //didMount , didUpdate 
+        const resize = () => {
+            setState(window.innerWidth);
+        }
+
+        window.addEventListener('resize',resize)
+
+        //willUnmount
+        return ()=>{
+            console.log('willunmount')
+            window.removeEventListener('resize',resize);
+        }
+    },[]);
+    return width;
+}
+
+```
+
+### HOC와 hook 비교
+
+```jsx
+// HOC
+
+// 컴포넌트를 인자로받아 처리해서 새로운 컴포넌트로 리턴한다.
+import React from 'react';
+
+export default function withHasMounted(Component){
+
+    class NewComponent extends React.Component{
+        state ={
+            hasMounted: false
+        } 
+        //컴포넌트 마운트된 직후
+        componentDidMount(){
+            this.setState({ hasMounted : true })
+        }
+
+        render(){
+            const {hasMounted} =this.state
+            // 원래있던 props는 그대로 전달해줘야한다.
+            return <Component {...this.props} hasMounted ={hasMounted}/>
+        }
+    }
+
+    NewComponent.displayName = `withHasMounted(${Component.name})`
+
+    return  NewComponent;
+}
+
+
+//App.js에서 HOC 사용
+
+import logo from './logo.svg';
+import './App.css';
+import withHasMounted from './HOCs/withHasMounted'
+
+
+function App({hasMounted}) {
+  console.log(hasMounted)
+  
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+      </header>
+    </div>
+  );
+}
+
+export default withHasMounted(App);
+
+```
+
+<br/>
+
+```js
+//hook
+
+import {useEffect, useState} from 'react';
+
+export default function useHasMounted(){
+    const [hasMounted,setHasMounted] = useState(false);
+
+    useEffect(()=>{
+        setHasMounted(true);
+    },[])
+
+    return hasMounted;
+}
+
+```
+<br/>
+
+### 리액트에서 제공하는 hook 들
+
+<br/>
+
+
+```js
+/*
+  1. useReducer
+  - 다수의 하윗값을 포함하는 복잡한 정적 로직을 만드는 경우 사용
+  - 다음 state가 이전 state에 의존적인 경우
+  - redux를 안다면 쉽게 사용 가능하다.
+*/
+
+
+import { useReducer } from "react";
+
+//reducer => state를 변경하는 로직이 담겨있는 함수
+//state는 이전 상태값 , action은 state안에 조작하려는 객체를 의미
+const reducer = (state ,action) => {
+    if(action.type === 'PLUS'){
+        return ({count : state.count +1 });
+    }
+    if(action.type === 'MINUS'){
+        return ({count : state.count - 1 });
+    }
+    return state;
+}
+//dispatch => action 객체를 넣어서 실행
+
+//actiom => 객체이고 필수 프로퍼티로 type을 갖는다.
+
+export default function Example6() {
+    
+    const [state , dispatch ] = useReducer(reducer , {count : 0})
+    
+    return (
+      <div>
+        <p>clicked {state.count} times</p>
+        <button onClick={clickP}>ClickP</button>
+        <button onClick={clickM}>ClickM</button>
+      </div>
+    );
+
+    function clickP(){
+        dispatch({type:'PLUS'});
+    }
+
+    function clickM(){
+        dispatch({type:'MINUS'});
+    }
+}
+
+
+/*
+  2.useMemo()
+  -
+*/
+
+
+
+```
+
+
+#
+### Context 간의 통신
+#
+
+```js
+  //하위 컴포넌트 변경
+
+import { useState } from "react";
+
+export default function A() {
+    const [value , setValue] = useState('안바뀜')
+    //value 값을 props로 내려주고 있다.
+    return(
+        <div>
+            <B value = {value}/>
+            <button onClick={click}>E 값을바꾼다.</button>
+        </div>
+    );
+    
+    //state 변경이 일어나면서 
+    //하위 컴포넌트로는 props의 변경이 연쇄적으로 일어난다.
+    function click() {
+        setValue('E의 값을 변경');
+    }
+}
+
+function B({value}) {
+    return(
+        <div>
+            <p>B</p>
+            <C value = {value}/>
+        </div>
+    )
+}
+function C({value}) {
+    return(
+        <div>
+            <p>C</p>
+            <D value = {value}/>
+        </div>
+    )
+}
+function D({value}) {
+    return(
+        <div>
+            <p>D</p>
+            <E value = {value}/>
+        </div>
+    )
+}
+function E({value}) {
+    return(
+        <div>
+            <p>E</p>
+            <h3>{value}</h3>
+        </div>
+    )
+}
+
+//하위에서 상위 컴포넌트로의 값 변경
+//상위의 setValue 함수를 전달받아 맨아래 E 컴포넌트에서 A 컴포넌트의 state 를 변경하고 있다.
+import { useState } from 'react';
+
+export default function A() {
+    const [value , setValue] = useState("안 바뀜")
+    return(
+        <div>
+            <p>{value}</p>
+            <B setValue={setValue}/>
+        </div>
+    );
+}
+
+function B({setValue}) {
+    return(
+        <div>
+            <p>B</p>
+            <C setValue={setValue}/>
+        </div>
+    )
+}
+
+function C({setValue}) {
+    return(
+        <div>
+            <p>C</p>
+            <D setValue={setValue}/>
+        </div>
+    )
+}
+
+function D({setValue}) {
+    return(
+        <div>
+            <p>D</p>
+            <E setValue={setValue}/>
+        </div>
+    )
+}
+
+function E({setValue}) {
+    return(
+        <div>
+            <p>E</p>
+            <button onClick={click}>click</button>
+        </div>
+    )
+    function click() {
+        setValue('A값 변경')
+    }
+}
+
+// 위 처럼 props로 값을 전달하게되면 불필요한 코드가 너무 반복된다.
+
+```
+
+#
+### react-context
+#
+
+> 하위 컴포넌트 전체에 데이터를 공유할때 사용하는 방식이다. 최상위 컴포넌트에서 
+데이터를 set하고 하위 컴포넌트에서는 데이터를 get하여 사용한다. 모든 하위 컴포넌트에서 접근 가능하다.
+
+<br/>
+  
+> 데이터 Set 하기 
+
+<br/>
+
+
+```js
+//1. 컨텍스트 생성
+
+import React from 'react'
+
+const PersonContext = React.createContext();
+
+export default PersonContext;
+
+//2. 최상위 컴포넌트인 <App/> 을 <PersonContext.Provider>로 감싼다.
+
+// <PersonContext.Provider>에는 props로 전달하길 원하는 데이터를 set하면
+// <PersonContext.Provider> 안에 모든 컴포넌트에서 데이터를 사용할 수 있다.
+
+const persons=[
+  {id:0 , name:'mark', age:39},
+  {id:1 , name:'ugo', age:40},
+]
+
+ReactDOM.render(
+  <React.StrictMode>
+    <PersonContext.Provider value = { persons }>
+      <App />
+    </PersonContext.Provider>
+  </React.StrictMode>,
+  document.getElementById('root')
+);
+
+```
+
+<br/>
+  
+> 데이터 get 하기 
+
+<br/>
+
+```js
+
+//컨텍스트에 setting된 데이터를 사용하는데는 3가지 방식이 있다.
+
+
+//1. consumer 사용
+
+//- <PersonContext.Provider>에서 설정한 데이터가
+//- <PersonContext.Consumer>안의 파라미터로 넘어온다.
+//- 넘어온 파라미터를 사용하여 함수를 통해 jsx를 return 하는 방식
+
+import PersonContext from "../contexts/PersonContext";
+
+export default function Example1() {
+    return(
+        <PersonContext.Consumer>
+            {(persons) =>(
+                <ul>
+                    {persons.map((p) => (
+                        <li>{p.name}</li>
+                    ))}
+                </ul>
+            )}
+        </PersonContext.Consumer>
+    );
+}
+
+//2.static contextType에 컨텍스트를 설정 (class 컴포넌트에서 시용함)
+
+import React from 'react'
+import PersonContext from '../contexts/PersonContext';
+
+export default class Example2 extends React.Component{
+    //static 변수에 context를 담아서 사용하고 있다.
+    static contextType = PersonContext;
+    
+    render(){
+        const persons = this.context;
+        return(
+            <ul>
+                {persons.map((p) => (
+                    <li>{p.name}</li>
+                ))}
+            </ul>
+        )
+    }
+}
+
+//3. useContext() hook 사용
+
+import { useContext } from "react";
+import PersonContext from "../contexts/PersonContext";
+
+export default function Example3() {
+    //useContext의 인자로 컨텍스트를 넘겨주면 
+    //컨텍스트에서 set한 value가 넘어온다.
+    const persons = useContext(PersonContext);
+    console.log(persons)
+    return(
+        <ul>
+            {persons.map((p) => (
+                <li>{p.name}</li>
+            ))}
+        </ul>
+    );
+}
+
+```
+
+
+
+#
+### 리액트 앱 배포
+#
+
+#
+#### SPA 배포 이해
+#
+
+
+
+
+
+
+
+
+
+
+
