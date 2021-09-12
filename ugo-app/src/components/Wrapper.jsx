@@ -1,11 +1,8 @@
-export default function Wrapper({children}) {
-    const styles = {
-        
-    };
 
-    return(
-            <div style={styles}>
-                {children}
-            </div>
-        );
+export default function Wrapper({children}) {
+    return (
+        <div className = "wrapper">
+            {children}
+        </div>
+    );
 }

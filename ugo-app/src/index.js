@@ -5,7 +5,6 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-
 // React App 의 main 함수 같은 역할을 한다.
 ReactDOM.render(
   <React.StrictMode>

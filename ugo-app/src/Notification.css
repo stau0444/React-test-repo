@@ -1,0 +1,73 @@
+html,
+body {
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(250deg, #7b2ff7, #f107a3);
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.notifications-box{
+  height: 620px;
+  max-height: 620px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.parent {
+  position: relative;
+  background: white;
+  width: 440px;
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.parent[data-isOpen="true"] {
+  width: 440px;
+  height: 180px;
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.child {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  background: #f107a3;
+  border-radius: 50%;
+  left: 15px;
+}
+.content{
+  font-family: 'Gowun Dodum', sans-serif;
+  font-size: 0.9;
+}
+.content[data-isOpen="false"]{
+  max-height: 90px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: 'Gowun Dodum', sans-serif;
+}
+.button-label {
+  color: ivory;
+  font-weight: bold;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /*요소의 높이/너비의 반(50%)만큼 위/왼쪽으로 이동*/
+  transform: translate(-50%, -50%);
+}
