@@ -1,16 +1,16 @@
-import React from 'react';
+import {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { Link } from 'react-router-dom';
 import { Avatar } from '@material-ui/core';
-import SimpleModal from './SimpleModal';
-import useMembers from '../hooks/useMembers';
+import useMembers from '../../hooks/useMembers';
+import LoginModal from './LoginModal';
+import SignUpModal from './SignUpModal';
 
 export default function SimpleMenu() {
   const {isLogin} = useMembers();
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -32,11 +32,11 @@ export default function SimpleMenu() {
         keepMounted
         open={Boolean(anchorEl)}
         onClose={handleClose}
-        style={{top:'59px',left:'-10px'}}
+        style={{width:'122px' ,top:'59px',left:'-15px'}}
       >
-        <MenuItem onClick={handleClose}><Link to="/about">Profile</Link></MenuItem>
-        <MenuItem onClick={handleClose}><SimpleModal/></MenuItem>
-        <MenuItem onClick={handleClose}><Link to="/about">Logout</Link></MenuItem>
+        <MenuItem onClick={handleClose}><LoginModal/></MenuItem>
+        <MenuItem onClick={handleClose}><SignUpModal/></MenuItem>
+        
       </Menu>
     </div>
   );

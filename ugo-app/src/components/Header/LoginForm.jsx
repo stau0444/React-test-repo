@@ -1,4 +1,4 @@
-import SimpleMenu from "../SimpleMenu";
+import SimpleMenu from "./SimpleMenu";
 
 export default function LoginForm() {
     return(

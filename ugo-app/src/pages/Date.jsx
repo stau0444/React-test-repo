@@ -1,15 +1,18 @@
-import DatePicker from "../components/DatePicker";
-import useMembers from "../hooks/useMembers";
-import { useMemo } from "react";
-import TodoTable from "../components/MemberList/TodoTable";
+import DatePicker from "../components/Date/DatePicker";
+import TodoTable from "../components/TodoList/TodoTable";
 import { motion } from 'framer-motion';
 export default function Date() {
-    const {members} = useMembers();
-    useMemo(()=>{console.log(members);},[]);    
+    
+    const item = {
+      hidden: { opacity: 0 },
+      show: { opacity: 1 }
+    };
     return (
       <motion.div
-        animate={{ scale: 1.01 }}
-        transition={{ duration: 0.4 }}
+        variants={item}
+        initial="hidden"
+        transition={{  duration:0.4}}
+        animate="show"
         className="wrapper"
       >
         <div>

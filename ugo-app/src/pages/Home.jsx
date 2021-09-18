@@ -1,14 +1,21 @@
-import MemberList from "../components/MemberList/MemberList";
-
 import { motion } from 'framer-motion';
+import TodoList from "../components/TodoList/TodoList";
 export default function Home() {
+  
+  const item = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1 }
+  };
+
   return (
     <motion.div
-      animate={{ scale: 1.01 }}
-      transition={{ duration: 0.4 }}
+      variants={item}
+      initial="hidden"
+      animate="show"
+      transition={{  duration:0.4}}
       className="wrapper"
     >
-      <MemberList />
+      <TodoList />
     </motion.div>
   );
 }

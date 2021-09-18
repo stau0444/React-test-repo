@@ -2,16 +2,11 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import { useHistory } from 'react-router';
-import useActions from '../hooks/useActions';
-import useMembers from '../hooks/useMembers';
-
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
+import useActions from '../../hooks/useActions';
 
 function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
+  const top = 50 ;
+  const left = 49.5 ;
 
   return {
     top: `${top}%`,
@@ -23,15 +18,16 @@ function getModalStyle() {
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
-    width: 400,
+    width: 480,
     backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
+    border: '2px solid #e94242dd',
+    borderRadius:'20px',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
 }));
 
-export default function SimpleModal() {
+export default function LoginModal() {
   const {setIsLogin} = useActions();
 
   const classes = useStyles();
@@ -56,9 +52,12 @@ export default function SimpleModal() {
   };
   const body = (
     <div style={modalStyle} className={classes.paper}>
-      <h2 id="simple-modal-title">Text in a modal</h2>
-      <p id="simple-modal-description">
-        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+      <h2 id="login-modal-title">로그인</h2>
+      <p id="login-modal-description">
+        아이디 
+      </p>
+      <p id="login-modal-description">
+        비밀번호
       </p>
       <button onClick = {login}>로그인</button>
     </div>
@@ -67,7 +66,7 @@ export default function SimpleModal() {
   return (
     <div>
       <button className="login-button" onClick={handleOpen}>
-        login
+        로그인
       </button>
       <Modal
         open={open}

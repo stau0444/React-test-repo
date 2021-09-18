@@ -5,7 +5,7 @@ export default function CustomDatePicker() {
   const [date , setDate] = useState("2021-09-09");
   const dateInput =useRef();  
   const changeDate = (e) => {
-      console.log(e.target.value);
+      setDate();
   };
   return (
     <form >

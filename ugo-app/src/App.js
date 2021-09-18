@@ -7,27 +7,28 @@ import "./Notification.css";
 import Wrapper from "./components/Wrapper";
 import TodoStateProvider from "./providers/TodoStateProvider";
 import { BrowserRouter, Route } from "react-router-dom";
-import About from "./pages/About";
 import Home from "./pages/Home";
-import Links from "./components/Links";
-import LoginForm from "./components/MemberList/LoginForm";
+import Links from "./components/Header/Links";
+import LoginForm from "./components/Header/LoginForm";
 import Date from "./pages/Date";
-import Notification from "./components/Notification";
+import AddNoticeTest from "./components/Notice/AddNoticeTest";
+import Notice from "./pages/Notice";
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="App">
-        <TodoStateProvider>
+      <TodoStateProvider>
+        <AddNoticeTest />
+        <div className="App">
           <Wrapper>
             <LoginForm />
             <Links />
             <Route path="/" exact component={Home} />
             <Route path="/date" exact component={Date} />
-            <Route path="/about" component={About} />
+            <Route path="/notice" component={Notice} />
           </Wrapper>
-        </TodoStateProvider>
-      </div>
+        </div>
+      </TodoStateProvider>
     </BrowserRouter>
   );
 }

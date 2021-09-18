@@ -1,8 +1,12 @@
 #
 
-## React
+## React & Redux
 
 #
+
+## React
+
+<br/>
 
 ### 개념
 
@@ -42,10 +46,25 @@
 -[Controlled Component 와 UnControlled Component](#Controlled-Component-와-UnControlled-Component)
 
 ### Hooks & Context
-- [basic hook](#basic-hook)
-- [Custom hook](#Custom-hook)
+-[basic hook](#basic-hook)   
+-[Custom hook](#Custom-hook)
 
 <br/>
+
+
+#
+## Redux
+
+<br/>
+
+### Redux basic
+-[리덕스란?](#1.리덕스란?)   
+-[Action](#2.-action)   
+-[Reducer](#3.reducer)    
+-[Store](#4.store)    
+
+
+#
 
 > 프레임워크 별 비교
 
@@ -2282,13 +2301,167 @@ export default function Example3() {
 ### 리액트 앱 배포
 #
 
+
 #
-#### SPA 배포 이해
+## Redux
 #
 
 
+### 1.리덕스란?
+#
+> 리액트에서 컴포넌트 간의 통신을 위해 context API를 사용한다. 이때 context에 있는 전역데이터를 효과적으로 관리하기위해 redux를 사용한다. 리덕스는 store라고 부르는 공간에서 state를 관리하고 특정 컴포넌트에서 해당 state에 변경을 일으킬시 해당 state에 의존하고 있는 모든 컴포넌트를 re-render 한다.
+
+<br/>
 
 
+![redux store img](https://css-tricks.com/wp-content/uploads/2016/03/redux-article-3-03.svg)
+
+<small> 위의 그림에서 보라색공은 상태를 변경하는 컴포넌트이고 파란색 줄로 연결된 컴포넌트들은 해당 상태에 의존하고 있는 컴포넌트들을 의미한다.</small>
+
+출처: https://css-tricks.com/wp-content/uploads/2016/03/redux-article-3-03.svg
+
+<br/>
+
+리덕스 사용에 필요한 것들
+```js
+/*리덕스를 사용하기 위해서 2가지 라이브러리가 필요하다.*/
+
+//store를 구성하기 위해 사용하는 라이브러리
+npm i redux
+
+//구성된 store에 컴포넌트들을 연결하기 위해 필요한 라이브러리
+npm i redux-start
+```
+
+
+#
+### 2. action
+#
+
+> action은 상태 변경에 대한 정보를  저장 하기위한 객체이다 action은 스토어에 전달되어 스토어에 있는 상태를 변경하기위해 사용된다.  . 두가지 형태의 액션이 있으며 
+type이라는 필수 property를 갖는다 type의 value는 문자열이다. 
+
+<br/>
+
+```js
+/* action의 특징 */
+
+//1.aciton은 두가지 형태를  갖는다.
+
+{type:'TEST'} //payload 없는 액션
+{type:'TEST' , params:'hello'} //payload가 있는 액션
+
+
+// 2. action은 함수를 통해 생성된다.이를 '액션 생성자' 라고 한다
+
+//action 생성자 함수
+function createTest(...args) {return 액션;}
+
+createTest('hello')
+//return되는 action 객체는 action 객체여야한다.
+//ex ) {type:'TEST',params:'hello'}
+
+//액션의 종류별로 액션 생성 함수가 존재한다.
+
+```
+
+    액션의 동작 순서
+
+    1. 액션 생성자를 통해 액션이 만들어진다 .
+    2. 만들어낸 액션 객체를 리덕스 스토어에 보낸다.
+    3. 리덕스 스토어가 액션 객체를 받으면 스토어의 상태값이 변경 된다. 
+    4. 변경된 상태 값에 의해 상태를 이용하는 컴포넌트가 변경된다 .
+
+    * 액션은 스토어에 보내는 일종의 인풋이라 할 수 있다.
+
+<br/>
+
+> action 생성
+
+<br/>
+
+
+```js
+//액션 타입 
+//타입은 문자열이고 상수처럼 정해 놓을 수 있다 
+// * 필수는 아니다
+const ADD_TODO = 'ADD_TODO';
+
+//액션 생성자
+//todo라는 파라미터를 받아 상태 변경에 사용한다.
+function addTodo(todo){
+    return {
+        type:ADD_TODO,
+        todo: todo
+    };
+}
+
+```
+
+#
+### 3.reducer
+#
+
+> reducer는 액셩을 주면 그 액션이 적용되어 달라진 결과를 만들어주는 함수이다 . Pure Function(같은 input에는 같은 결과를 리턴한다.) 이며 immutable(
+  이전 상태와 새로 변경된 상태는 별도의 객체로 만들어진다.
+)하다 immutable 하게 변경됨으로써 리덕스가 스테이트가 변경됨을 인지하기 때문에 immutable 않게 처리된다면 문제가 발생할 수 있다.
+
+<br/>
+
+```js
+//reducer의 형태
+function reducer(previousState , action){
+  return newState;
+}
+
+/*
+    액션을 받아서 스테이트를 리턴한다 .
+    인자로 들어오는 previousState와 리턴되는      
+    newState는 다른 참조를 가지도록 해야한다(immutable).
+*/
+
+
+//리듀서 함수 생성
+
+import { ADD_TODO } from './redux/actions';
+
+const initialState = [];
+
+function todoApp(prevState = initialState, action){
+    // 초기값 설정 해주는 부분
+    // 위처럼 파라미터에서 default 값을 지정할 수도 있다.
+    // if(prevState === undefined ){
+    //     return [];
+    // }
+
+    
+    if(action.type === ADD_TODO){
+
+        //ADD_TODO 타입일 경우의 로직
+
+        return[...prevState , action.todo];
+    }
+
+    //immutable 하지 않은 코드
+    //prevState.push(''); 
+
+    return prevState;
+}
+
+```
+
+#
+### 4.Store
+#
+
+> 리덕스 라이브러리의 함수인 createStore를 통해 store를 생성할 수 있다.
+createStroe의 파라미터로 reduce 함수, preloadedState(상태 초기값) , enhancer를 전달하여 store를 생성한다.
+
+```js
+
+
+
+```
 
 
 

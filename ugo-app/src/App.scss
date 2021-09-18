@@ -24,6 +24,7 @@ html{
       align-items: baseline;
   }
   .wrapper{
+    
     .login-form{
       position: absolute;
       right:20px;
@@ -40,6 +41,7 @@ html{
       }
     }
     .link-list{
+      margin-top: 40px;
       padding-left: 0;
       &>li{
         margin: 10px 2px;

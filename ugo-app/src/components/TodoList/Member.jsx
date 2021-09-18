@@ -1,7 +1,6 @@
 import useActions from "../../hooks/useActions";
 import useMembers from "../../hooks/useMembers";
 import { useRef } from 'react';
-import { Button } from '@material-ui/core';
 
 export default function Member({member}){
     const {updateState} = useMembers();

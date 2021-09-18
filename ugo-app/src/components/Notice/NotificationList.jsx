@@ -1,4 +1,4 @@
-import useNotice from '../hooks/useNotice';
+import useNotice from '../../hooks/useNotice';
 import Notification from './Notification';
 
 
