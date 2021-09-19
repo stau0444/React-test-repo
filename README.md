@@ -62,8 +62,7 @@
 -[Action](#2.-action)   
 -[Reducer](#3.reducer)    
 -[Store](#4.store)    
-
-
+-[combineReducers](#5.combineReducers)
 #
 
 > 프레임워크 별 비교
@@ -2455,14 +2454,57 @@ function todoApp(prevState = initialState, action){
 #
 
 > 리덕스 라이브러리의 함수인 createStore를 통해 store를 생성할 수 있다.
-createStroe의 파라미터로 reduce 함수, preloadedState(상태 초기값) , enhancer를 전달하여 store를 생성한다.
+createStore()의 파라미터로 reduce 함수, preloadedState(상태 초기값) , enhancer를 전달하여 store를 생성한다.
 
 ```js
 
+//스토어 생성
 
+import { createStore } from 'redux';
+import { todoApp } from './reducers';
+
+
+const store  = createStore(todoApp,[1,2,3]);
+
+export default store;
+
+//스토어 객체의 형태
+//아래와 같은 메서드들을 제공한다.
+
+{
+  dispatch: ƒ,   
+  subscribe: ƒ, 
+  getState: ƒ, 
+  replaceReducer: ƒ, 
+  @@observable: ƒ
+}
+
+//스토어의 기능들
+
+/*
+ store 객체의 메서드 
+
+  1. getState(); 
+  - 현재 상태를 리턴한다.
+ 
+  2. dispatch(액션 or 액션생성자());
+  - 인자로 들어온 action에 따라 state를 변경한다.
+  
+  3. subscribe(함수) 
+  - 스토어가 업데이트 될대마다 파라미터로 들어가는 함수가 실행된다.
+  - unsubscribe 역할을하는 함수를 리턴한다.
+  
+  4. replaceReducer(다른 리듀서)
+  - 리듀서가 교체된다.
+*/
 
 ```
 
+#
+### 5.combineReducers
+#
+
+> 
 
 
 
