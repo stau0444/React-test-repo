@@ -63,6 +63,8 @@
 -[Reducer](#3.reducer)    
 -[Store](#4.store)    
 -[combineReducers](#5.combineReducers)
+-[redux를 react에 연결](#6.redux를-react에-연결-(리덕스-기능-없이))
+-[redux의 메서드 활용하여 react에 연결](#7.redux-메서드-활용하여-react에-연결)
 #
 
 > 프레임워크 별 비교
@@ -2504,7 +2506,372 @@ export default store;
 ### 5.combineReducers
 #
 
-> 
+> 앱이 커질수록 관리해야하는 action과 reducer 들이 많아지기 때문에 하나의  reducer에 
+모든 기능을 넣어 놓지않고 각각 의존하는 dependency에 따라 reducer를 분리하고 combineReducers()를 통해
+분리된 reducer들을 하나로 묶어서 store에 제공할 수 있게 해준다.
+
+<br/>
+
+```js
+
+
+
+/* actions.js */
+
+//아래와 같이 4가지 액션이 정의되어있다.
+//ADD_TODO , COMPLETE_TODO 는 todo라는 데이터를 의존하고 있고
+//SHOW_ALL, SHOW_COMPLETE 는 filter 라는 데이터를 의존하고 있다.
+export const ADD_TODO = 'ADD_TODO';
+export const COMPLETE_TODO = 'COMPLETE_TODO';
+export const SHOW_ALL = 'SHOW_ALL';
+export const SHOW_COMPLETE = 'SHOW_COMPLETE';
+
+export function addTodo(text){
+    return {
+        type:ADD_TODO,
+        text,
+    };
+}
+
+export function completeTodo(index){
+    return {
+        type:COMPLETE_TODO,
+        index
+    }
+}
+
+export function showAll(){
+    return{type: SHOW_ALL };
+}
+export function showComplete(){
+    return{type: SHOW_COMPLETE };
+}
+
+/* todos.js */
+
+import { ADD_TODO , COMPLETE_TODO } from '../actions';
+
+const initialState =[];
+
+//todos reducer
+
+//todos reducer는 ADD_TODO , COMPLETE_TODO 이라는 액션에 대한 로직이 정의되어 있다.
+export default function todos(prevState = initialState , action){
+    if(action.type === ADD_TODO){
+        return [...prevState , {text : action.text , done: false}];
+    }
+
+    if(action.type === COMPLETE_TODO){
+        return  prevState.map((todo , index) => {
+            if(index === action.index){
+                return {...todo , done: true };
+            }
+            return todo;
+        });
+    }
+    return prevState;
+}
+
+
+/* filter.js */
+
+import {SHOW_COMPLETE, SHOW_ALL } from '../actions';
+const initialState = 'ALL';
+
+//todos reducer는 SHOW_COMPLETE , SHOW_ALL이라는 액션에 대한 로직이 정의되어 있다.
+export default function filter(prevState = initialState, action){
+    
+    if(action.type === SHOW_COMPLETE){
+        return {
+            filter: 'COMPLETE'
+        };
+    }
+
+    if(action.type === SHOW_ALL){
+        return {
+            filter: 'ALL'
+        };
+    }
+    return prevState;
+}
+
+
+/* reducer.js */
+
+//combineReducers를 통해 odos reducer와 filter reducer를 합쳐주고 있다.
+import { combineReducers } from 'redux';
+import todos from './todos';
+import filter from './filter';
+
+const reducer = combineReducers({
+    todos : todos, 
+    filter: filter
+});
+
+export default reducer;
+
+/* store.js */
+//store에서는 reducer.js에서 export한  reducer를 사용하고 있다.
+
+import { createStore } from 'redux';
+import reducer from './reducers/reducer';
+
+const store  = createStore(reducer);
+
+export default store;
+
+
+/*
+  -각각의 dependency에 맞는 action들 끼리 분리되어 코드가 깔끔해지고 유지보수가 쉽다.
+*/
+
+```
+
+
+#
+### 6.redux를 react에 연결 (리덕스 기능 없이)
+#
+
+> 단일 store를 만들고 subscribe와 getState를 이용하여 , 변경되는 state 데이터를 얻어 props로 계속 전달한다 . 
+componentDidMount시점에 subscribe  , 
+componentWillUnmount 시점에 unsubscribe 를 구현한다.
+
+```js
+
+/*
+  store를 react에 연결
+  -redux의 메서드 없이 연결해보면서 어떻게 동작하는지 알아보자
+*/
+
+
+import logo from './logo.svg';
+import './App.css';
+import { useEffect, useState } from 'react';
+import { addTodo} from './redux/actions';
+
+function App({store}) {
+
+  /*store 변화에 반응하는 메서드*/
+
+  //store에서 넘어온 state 값이 useState로 관리된다.
+  const [state , setState ] = useState(store.getState); 
+  //componentDidMount, componentWillUnmount 시점에 
+  //store의 subscribe , unsubscribe을 통해 
+  //state변경시 setState 해줘 다시 랜더시킨다.
+  useEffect(()=>{
+    //componentDidMount
+    const unsubscribe = store.subscribe(()=>{
+      setState(store.getState());
+    })
+    //componentWillUnmount
+    return () => {
+      unsubscribe();
+    }
+  },[store]);
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        {JSON.stringify(state)}
+      <button onClick = { click }>추가</button>
+      </header>
+    </div>
+  );
+
+  /*store를 통해 state를 변경하는 메서드 */
+
+  //click 시에 액션을 실행하여 todo를 추가한다.
+  function click(){
+    store.dispatch(addTodo('todo'));
+  }
+}
+
+export default App;
+
+
+/*context를 통한 store 전달*/
+
+
+//ReduxContext.js
+// 컨텍스트 생성
+import {createContext} from 'react';
+
+const ReduxContext = createContext();
+
+export default ReduxContext;
+
+
+//index.js 
+
+//컨택스트 사용 store 전달
+//App 하위의 모든 컴포넌트에 store가 전달된다.
+ReactDOM.render(
+  <React.StrictMode>
+    <ReduxContext.Provider value = {store}>
+      <App/>
+    </ReduxContext.Provider>
+  </React.StrictMode>,
+  document.getElementById('root')
+);
+
+//custom 훅으로 store 관리
+
+// useReduxState.js
+// state 변경에 대한 로직을 관리하는 hook
+export default function useReduxState() {
+    const store = useContext(ReduxContext);  
+    const [state , setState ] = useState(store.getState); 
+    
+    useEffect(()=>{
+      const unsubscribe = store.subscribe(()=>{
+        setState(store.getState());
+      })
+      return () => {
+        unsubscribe();
+      }
+    },[store]);
+    
+    return state ;
+  }
+
+
+//useReduxDispatch.js
+//스테이트에 변경을 가하는 dispatch를 관리하는 hook
+
+import { useContext } from 'react';
+import ReduxContext from '../contexts/ReduxContext';
+
+export default function useReduxDispatch() {
+    const store = useContext(ReduxContext)
+    return store.dispatch;
+}
+
+//TodoList.jsx
+//custom hook 사용 
+export default function TodoList() {
+    //useReduxState를 통해 state를 가져오고 있다.
+    const state = useReduxState();
+    return(
+        <ul>{state.todos.map(
+            (todo)=>{
+                return <li>{todo.text}</li>
+            }
+        )}</ul>
+    );
+}
+
+//TodoForm.jsx
+//useReduxDispatch를 통해 dispatch 를 가져와서 사용하고 있다.
+export default function TodoForm() {
+    const inputRef  = useRef();
+    const dispatch = useReduxDispatch();
+    return(
+        <div><input ref={inputRef} /> <button onClick = {click}> 추가 </button></div>
+    );
+
+    function click(){
+        dispatch(addTodo(inputRef.current.value))
+    }
+}
+```
+
+#
+### 7.redux 메서드 활용하여 react에 연결
+#
+
+```js
+
+//react와 redux를 연결해주는 라이브러리
+npm i react-redux 
+
+```
+
+<br/>
+
+> 리덕스에서 제공하는 HOC 혹은 hook을 통해 리액트 컴포넌트에 리덕스를 연결시켜 줄 수 있다.
+리덕스에서 관리하는 state를 컴포넌트의 props로 전달해 주기 때문에 해당역할을 해줄 컨테이너를
+만들고 컨테이너에서 컴포넌트로 state를 전달해 준다 . 이떄 리덕스와의 연결을 담당할 컨테이너와 
+화면을 담당할 컴포넌트를 분리해서 만든다. 
+
+<br/>
+
+### HOC를 사용하여 연결
+<br/>
+
+>raect-redux  라이브러리에서는  connect라는 함수를 제공한다. 
+connect는 컨테이너를 생성하는 함수를 리턴하고 리턴한 함수는 컨테이너를 객체를 리턴한다.
+
+<br/>
+
+```js
+
+//TodoListContainer.jsx
+//HOC를 활용한 연결
+//react-redux에서 제공하는 HOC함수인 connect를 이용하여 
+//컴포넌트와 리덕스 state를 연결
+
+//connect() 함수의 파라미터로는 config , 바깥쪽함수에는 컨테이너로 만들 컴포넌트가 들어간다. 
+const TodoListContainer = connect(
+    //config 영역
+    //첫번째 인자로 어떤 state를 리턴할지에 대한 함수가 들어간다.
+    //함수의 인자로 store에서 관리중인 state가 넘어오고 props의 형태로 리턴해주면  컴포넌트로 전달된다
+    //두번째 인자로는 dispatch 함수가 들어온다 .props의 형태로 리턴해주면 컴포넌트로 전달된다
+      (state) => ({todos: state.todos,}),
+      (dispatch) => ({})
+)(TodoList//container화 될 컴포넌트);
+
+export default TodoListContainer;
+
+//TodoList.jsx
+//화면만 담당하기 때문에 Presentation Component라고 한다
+//props로 컨테이너에서 전달해준 todos가 들어온다.
+export default function TodoList({todos}) {
+    return(
+        <ul>{todos.map(
+            (todo)=>{
+                return <li key={todo.id}>{todo.text}</li>
+            }
+        )}</ul>
+    );
+}
+
+
+```
+<br/>
+
+### Hook을 사용하여 연결
+
+<br/>
+
+> react-redux 라이브러리에서 는 useSelector,useDispatch hook을 제공한다. 
+HOC와 마찬가지로 hook을 통해 하위 컴포넌트에 props로 store의 state를 전달해 줄 수 있다.
+
+<br/>
+
+```js
+//useSelector를 통해 원하는 state 를 전달해 줄 수 있다 . 
+//useSelector의 인자로 store의 state가 들어오고 해당 화살표함수 오른편에 있는 state를 리턴 해준다. 
+export default function TodoListContainer(e) {
+  const todos  = useSelector((state)=>state.todos);
+  return <TodoList todos = {todos}/>
+}
+
+//useDispatch()를 통한 store의 dispatch 함수 사용
+export default function TodoFormContainer() {
+    
+    const dispatch = useDispatch();
+    //한번만 정의되면 되기 때문에 useCallback으로 정의해 준다.
+    const add = useCallback((text)=>{
+        dispatch(addTodo(text))
+    },[dispatch])
+    //props로 action을 실행하는 함수를 넘겨준다.
+    return<TodoForm add={add}/>;
+}
+```
+
+
+
+
 
 
 
