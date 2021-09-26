@@ -1,6 +1,6 @@
 
 import TodoForm from "../components/TodoForm";
-import { addTodo } from '../redux/actions';
+import { addTodo } from '../redux/modules/todos';
 import {useDispatch} from 'react-redux'
 import {useCallback} from 'react'
 //리덕스와 TodoForm 컴포넌트를 연결해준다.
