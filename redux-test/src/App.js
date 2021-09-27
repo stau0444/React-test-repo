@@ -1,18 +1,18 @@
-import logo from './logo.svg';
 import './App.css';
-import TodoListContainer from './containers/TodoListContainer';
-import TodoFormContainer from './containers/TodoFormContainer';
-import UserListContainer from './containers/UserListContainer';
+import {Router, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import Todos from './pages/Todos';
+import Users from './pages/Users';
+import history from './history';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <UserListContainer/>
-        <TodoListContainer/>
-        <TodoFormContainer/>
-      </header>
-    </div>
+    //전역으로 생성된 history를 사용하고 있다
+        <Router history={history}>
+          <Route path ="/" exact component={Home}/>
+          <Route path ="/todos" exact component={Todos}/>
+          <Route path ="/users" exact component={Users}/>
+        </Router>
   );
 }
 

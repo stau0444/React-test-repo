@@ -1,4 +1,5 @@
 
+import { axios } from 'axios';
 //github api 호출 시작
 const GET_USERS_START = 'redux-test/users/GET_USERS_START'; 
 
@@ -62,4 +63,20 @@ export default function reducer(state = initialState , action) {
         }
     }
     return state;
+}
+
+//react-thunk 사용하여 비동기 처리
+
+export function getUsersThunk() {
+    //store.js에서 인자로 전달된 history를 thunk 함수에서 사용한다.
+    return async (dispatch , getState , {history}) => {
+        try{
+            console.log(history);
+            dispatch(getUsersStart());
+            const resp = await axios.get('https://api.github.com/users')
+            dispatch(getUsersSucess(resp.data));
+        }catch(error){
+            dispatch(getUsersFail(error));
+        }
+    }
 }
