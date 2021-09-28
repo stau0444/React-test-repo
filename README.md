@@ -1485,11 +1485,13 @@ export default StyledButton;
 
 ```
 <br/>
->위와 같이 작성된 컴포넌트는 App.js에서  사용될 수 있다. 
+
+> 위와 같이 작성된 컴포넌트는 App.js에서  사용될 수 있다. 
 Styled Components의 장점은 className 등을 자동으로 겹치지 않게 선언해주기 떄문에 css가 오염되는 문제를 피할 수 있게 해준다
 스타일을 정의하는 ``은 문자열로 해석되기 때문에 IDE에서 문법 오류를 잡아낼 수 없다 . 
 이럴 경우 IDE plug-in을 사용하면 css 처럼 사용할 수 있게 해준다.
 
+<br/>
 
 ```jsx
 

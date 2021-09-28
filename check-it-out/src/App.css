@@ -1,0 +1,38 @@
+html{
+  background: gray;
+}
+.App {
+    padding: 20px;
+    position: relative; /* 추후 박스 하단에 추가 버튼을 위치시키기 위한 설정 */
+    border:5px solid rgba(255, 127, 80, 0.637);
+    background: rgb(221, 221, 221);
+    border-radius: 16px;
+    box-shadow: 4px 4px 4px  rgba(12, 11, 11, 0.582);
+    margin: 0 auto; /* 페이지 중앙에 나타나도록 설정 */
+    margin-top: 96px;
+    margin-bottom: 32px;
+    display: flex;
+    flex-direction: column;
+}
+.logo-link{
+  text-decoration: none;
+  text-align: center;
+}
+p{
+  font-family: 'Poiret One', cursive;
+  margin: 0;
+  font-size: 30px;
+  font-weight: bold;
+  color: royalblue;
+}
+
+.logo-link-first{
+  font-weight: bold;
+}
+.logo-link-second{
+  font-size: 25px;
+}
+.logo-link-third{
+  font-size: 25px;
+  color: gray;
+}

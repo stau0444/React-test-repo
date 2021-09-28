@@ -13,12 +13,14 @@ import LoginForm from "./components/Header/LoginForm";
 import Date from "./pages/Date";
 import AddNoticeTest from "./components/Notice/AddNoticeTest";
 import Notice from "./pages/Notice";
+import { Container } from "@material-ui/core";
 
 function App() {
   return (
     <BrowserRouter>
       <TodoStateProvider>
         <AddNoticeTest />
+        <Container maxWidth="sm">
         <div className="App">
           <Wrapper>
             <LoginForm />
@@ -28,6 +30,7 @@ function App() {
             <Route path="/notice" component={Notice} />
           </Wrapper>
         </div>
+        </Container>
       </TodoStateProvider>
     </BrowserRouter>
   );
