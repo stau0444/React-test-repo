@@ -19,6 +19,7 @@ const initialState = [];
 
 export default function reducer(prevstate = initialState , action) {
     if(action.type === ADD_TODO){
+        console.log('addtodo')
         return [...prevstate, {text:action.text , done:false}]
     }
 

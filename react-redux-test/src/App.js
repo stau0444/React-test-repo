@@ -1,10 +1,18 @@
 import './App.css';
-import BookSearch from './components/BookSearch';
+import BookSearchContainer from './containers/BookSearchContainer';
+import BookListContainer from './containers/BookListContainer';
+import TodoFormContainer from './containers/TodoFormContainer';
+import TodoListContainer from './containers/TodoListContainer';
 
-function App() {
+
+function App({store}) {
+  console.log(store)
   return (
     <div className="App">
-      <BookSearch/>
+      <TodoFormContainer/>
+      <TodoListContainer/>
+      <BookSearchContainer store={store}/>
+      <BookListContainer/>
     </div>
   );
 }

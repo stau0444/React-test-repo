@@ -1,14 +1,14 @@
 import { useRef } from "react";
 
 export default function TodoForm({add}) {
-    const inputRef = useRef();
+    const todoInputRef = useRef();
     const click = () => {
-        add(inputRef.current.value);
+        add(todoInputRef.current.value);
     }
 
     return(
         <div>
-            <input ref = {inputRef} type="text" />
+            <input ref = {todoInputRef} type="text" />
             <button onClick ={ click }>추가</button>
         </div>
     );

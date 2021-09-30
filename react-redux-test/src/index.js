@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
@@ -7,10 +7,11 @@ import { Provider } from 'react-redux';
 import store from './redux/store';
 
 console.log('state' , store.getState())
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store = {store}>
-      <App />
+      <App store={store}/>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

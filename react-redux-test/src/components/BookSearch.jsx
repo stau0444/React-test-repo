@@ -1,44 +1,18 @@
-import { useEffect, useRef, useState } from "react";
-import axios from 'axios'
-import BookList from "./BookList";
+import {useCallback, useRef} from "react";
 
-export default function BookSearch() {
-
-    const [books , setBooks] = useState([]);
-    const [page , setPage ] = useState(0);
-    const [pageNums,setPageNums ]= useState([1,2,3,4,5,6,7,8,9,10]);
-
-    useEffect(()=>{
-        console.log(page);
-    },[page])
-
-    const inputRef = useRef();
-    const apiKey = "0CEB9A0ED6BF63F389F3013C0A403C3E4AB6AD7DFAAC5DF51FD9AAFD8CB021FE";
-    const headers = {
-        "X-Requested-With": "XMLHttpRequest",
-        'Access-Control-Allow-Origin': 'http://localhost:3000/',
-        'Content-Type':"application/json",
-    }
-    axios.defaults.headers.post = null
-    const proxyAdress ='https://ch-proxy-server-cors-anywhere.herokuapp.com';
+export default function BookSearch({getBooks,keyword,pageNum}) {
     
-    const searchBook = () => {
-        console.log();
-        console.log('page',page);
-        const adress = `${proxyAdress}/https://book.interpark.com/api/search.api?key=${apiKey}&query=${inputRef.current.value}&output=json&adultImageExposure=y&start=${page*10+1}`
-        axios.get(adress,{headers})
-        .then((res)=>{
-            setBooks(res.data.item);
-            setPage(Math.ceil(res.data.totalResults/5))
-        })
-    }
+    const  searchBooks =useCallback((keyword,pageNum) => {
+        getBooks(keyword,pageNum);
+    },[getBooks])
 
-    return(
+    const BookInputRef = useRef();
+
+     return(
         <div>
-            <input type="text" ref={inputRef} />
-            <button onClick={searchBook}>검색</button>
-            <BookList books = {books}/>
-            
+            <input type="text" ref={BookInputRef} />
+            <button onClick={()=>{searchBooks(BookInputRef.current.value,0)}}>검색</button>
+            <button onClick={()=>{searchBooks(BookInputRef.current.value,++pageNum)}}>더보기</button>
         </div>
     );
 
