@@ -1,27 +1,40 @@
+
+ul,h2,a,p{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
 html{
-  background: gray;
+  background: rgb(32, 38, 45);
 }
+/* linear-gradient(to right bottom, rgb(0, 127, 255), rgb(0, 89, 178) 120%); */
 .App {
-    padding: 20px;
-    position: relative; /* 추후 박스 하단에 추가 버튼을 위치시키기 위한 설정 */
-    border:5px solid rgba(255, 127, 80, 0.637);
-    background: rgb(221, 221, 221);
-    border-radius: 16px;
-    box-shadow: 4px 4px 4px  rgba(12, 11, 11, 0.582);
-    margin: 0 auto; /* 페이지 중앙에 나타나도록 설정 */
-    margin-top: 96px;
-    margin-bottom: 32px;
-    display: flex;
-    flex-direction: column;
+  width: 512px;
+  height: 672px;
+  position: relative; /* 추후 박스 하단에 추가 버튼을 위치시키기 위한 설정 */
+  background:rgb(0, 30, 60);
+  border-radius: 16px;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
+
+  margin: 0 auto; /* 페이지 중앙에 나타나도록 설정 */
+
+  margin-top: 96px;
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
 }
+
+/* 로고 */
+
 .logo-link{
   text-decoration: none;
   text-align: center;
 }
-p{
+p.logo-link-first,p.logo-link-second,p.logo-link-third{
   font-family: 'Poiret One', cursive;
   margin: 0;
-  font-size: 30px;
+  font-size: 25px;
   font-weight: bold;
   color: royalblue;
 }
@@ -36,3 +49,66 @@ p{
   font-size: 25px;
   color: gray;
 }
+
+
+/* 페이지네이터 */
+
+.pagination {
+  margin: 15px auto;
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  outline: none;
+  padding: 0;
+}
+.pagination > .active > a{
+  background-color: bisque ;
+  border-color: bisque;
+  color: #fff;
+}
+
+.pagination > li > a{
+  border: 1px solid coral ;
+  padding: 5px 10px;
+  outline: none;
+  cursor: pointer;
+}
+.pagination > li > a:nth-child(3){
+  color: black;
+}
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus{
+  background-color: coral ;
+  border-color: coral;
+  outline: none ;
+}
+.pagination > li > a, .pagination > li > span{
+  color: coral;
+}
+.pagination > li:first-child > a, .pagination > li:first-child > span, .pagination > li:last-child > a, .pagination > li:last-child > span{
+  border-radius: unset
+}
+
+/* content 리스트*/
+.content{
+  margin: 15px auto;
+  width: 90%;
+  background-color: royalblue;
+  border-radius: 30px;
+}
+
+
+/* 메뉴 링크 */
+
+.menu-links{
+  margin: 0 auto;
+  width: 80%;
+  border-radius: 10px;
+  justify-content: center;
+  display: flex;
+  border: 0.15em solid gray;
+}
+
+.menu-link{
+  margin: 10px 10px;
+}
+

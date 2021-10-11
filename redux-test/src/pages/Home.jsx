@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 export default function Home() {
     return(
@@ -6,10 +6,19 @@ export default function Home() {
             <h1>HOME</h1>
             <ul>
                 <li>
-                    <Link to="/todos">Todos</Link>
+                    <Link to="/1">1</Link>
                 </li>
                 <li>
-                    <Link to="/users">Users</Link>
+                    <Link to="/2">2</Link>
+                </li>
+                <li>
+                    <Link to="/3">3</Link>
+                </li>
+                <li>
+                    <Link to="/4">4</Link>
+                </li>
+                <li>
+                    <Link to="/5">5</Link>
                 </li>
             </ul>
         </div>
