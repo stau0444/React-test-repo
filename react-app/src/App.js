@@ -1,37 +1,113 @@
+import './App.scss';
 
-import {BrowserRouter , Redirect, Route ,Switch } from 'react-router-dom';
-import './test.css';
-import './App.css';
-import Home from './pages/Home';
-import Profile from './pages/Profile';
-import About from './pages/About';
-import NotFound from './pages/NotFound'
-import Links from './components/Links';
-import NavLinks from './components/NavLinks';
-import Login from './pages/Login';
 
-const isLogin = false ;
 
 function App() {
-  return (
-    <BrowserRouter>
-      <h2 className = 'test'>test</h2>
-      <Links/>
-      <NavLinks/>
-      <Switch>
-        {/*Route의 reder에 정의한 jsx가 렌더된다*/}
-        <Route 
-          path="/login"  
-          render={()=>(isLogin ? <Redirect to='/'/> : <Login />)}
-          />
-        <Route path="/profile/:id"  component ={Profile}/>
-        <Route path="/profile"  component ={Profile}/>
-        <Route path="/about" component ={About}/>
-        <Route path="/"  exact component ={Home}/>
-        <Route component={NotFound}/>
-      </Switch>
-    </BrowserRouter>
-    
+  return (  
+      <div className='App'> 
+        <div className='text-logo'>
+          <p className='text-logo-first'>THINGS</p>
+          <p className='text-logo-second'>I</p>
+          <p className='text-logo-third'>LOVE</p>
+        </div> 
+          <div className='container'>
+            <div className='content'>
+              <div className='content-logoBox'>
+                <div className='content-imageBox'>
+                  <img className='content-logo' src='/tilLogo.png' alt=''/>
+                  <p className='content-logo-desc'>Things I love</p>
+                </div>
+                <div className='content-slogun'>
+                      <small>내가 좋아하는 것들만 저장해요 🍔 🌮 🍕 🍷 🏨 ☕️ 🏃‍♀️</small>
+                </div>
+                <hr className='content-divider'/>
+              </div>
+              <div className='content-select-buttonBox'>
+                <select className='selectButton'>
+                  <option>물건 🍔</option>
+                </select>
+                <select className='selectButton'>
+                  <option>장소 🏨</option>
+                  <option>물건 🍔</option>
+                  <option>식당 🍔</option>
+                </select>
+                <select className='selectButton'>
+                  <option>카페 ☕️</option>
+                </select>
+                <select className='selectButton'>
+                  <option>식당 🍕</option>
+                </select>
+                <select className='selectButton'>
+                  <option>숙소</option>
+                </select>
+                <select className='selectButton'>
+                  <option>물건🏨</option>
+                </select>
+                <select className='selectButton'>
+                  <option>물건 🍔</option>
+                </select>
+                <select className='selectButton'>
+                  <option>장소 🏨</option>
+                </select>
+                <select className='selectButton'>
+                  <option>카페 ☕️</option>
+                </select>
+              </div>
+              <hr className='content-divider'/>
+              <div className='listBox'>
+                <ul>
+                  <li>
+                    <div className='list-item'>
+                        <h3 className='list-title'>정릉설렁탕</h3>
+                        <small className='list-description'>정릉동 숨은 맛집 다신 안감</small>
+                    </div>
+                    <div className='list-item'>
+                      <h3 className='list-title'>정릉설렁탕</h3>
+                      <small className='list-description'>정릉동 숨은 맛집 다신 안감</small>
+                    </div>
+                    <div className='list-item'>
+                      <h3 className='list-title'>정릉설렁탕</h3>
+                      <small className='list-description'>정릉동 숨은 맛집 다신 안감</small>
+                    </div>
+                    <div className='list-item'>
+                      <h3 className='list-title'>정릉설렁탕</h3>
+                      <small className='list-description'>정릉동 숨은 맛집 다신 안감</small>
+                    </div>
+                    <div className='list-item'>
+                      <h3 className='list-title'>정릉설렁탕</h3>
+                      <small className='list-description'>정릉동 숨은 맛집 다신 안감</small>
+                    </div>
+                    <div className='list-item'>
+                      <h3 className='list-title'>정릉설렁탕</h3>
+                      <small className='list-description'>정릉동 숨은 맛집 다신 안감</small>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div className='container-detail'>
+            <div className='detail-login'>
+              <div className='detail-login-user'>
+                <span className='user-thumbnail-box'>
+                  <img className='user-thumbnail'src='logo192.png' alt=''/>
+                </span>
+                <span className='user-id-box'>
+                  <p className='user-id'>
+                    UGO0444
+                  </p>
+                </span>
+              </div>
+              <div>
+                
+              </div>
+            </div>
+            <div className='detail-content'>
+
+            </div>
+          </div>
+      </div>
+      
   );
 }
 

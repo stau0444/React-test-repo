@@ -1,0 +1,20 @@
+.circle {
+    width: 10px;
+    height: 10px;
+    background: red;
+    border-radius: 50%;
+    position: absolute;
+    animation: fade 1s linear;
+
+  }
+  @keyframes fade {
+    from {
+      scale: 0;
+      filter: hue-rotate(90deg);
+    }
+    to {
+      scale: 1.3;
+      filter: invert(1);
+      filter: hue-rotate(0deg);
+    }
+  }
